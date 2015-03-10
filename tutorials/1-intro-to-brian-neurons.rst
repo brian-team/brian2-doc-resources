@@ -2,6 +2,13 @@
 Introduction to Brian part 1: Neurons
 =====================================
 
+    .. note::
+       This tutorial is written as an interactive notebook that should be run
+       on your own computer. See the :doc:`tutorial overview page <index>` for
+       more details.
+
+       Download link for this tutorial: :download:`1-intro-to-brian-neurons.ipynb`.
+    
 All Brian scripts start with the following. If you're trying this
 notebook out in IPython, you should start by running this cell.
 
@@ -88,7 +95,7 @@ happens?
     ----> 1 print 5*amp+10*volt
     
 
-    /home/marcel/programming/brian2/brian2/units/fundamentalunits.py in __add__(self, other)
+    /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in __add__(self, other)
        1301         return self._binary_operation(other, operator.add,
        1302                                       fail_for_mismatch=True,
     -> 1303                                       message='Addition')
@@ -96,7 +103,7 @@ happens?
        1305     def __radd__(self, other):
 
 
-    /home/marcel/programming/brian2/brian2/units/fundamentalunits.py in _binary_operation(self, other, operation, dim_operation, fail_for_mismatch, message, inplace)
+    /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in _binary_operation(self, other, operation, dim_operation, fail_for_mismatch, message, inplace)
        1249 
        1250         if fail_for_mismatch:
     -> 1251             fail_for_dimension_mismatch(self, other, message)
@@ -104,7 +111,7 @@ happens?
        1253         if inplace:
 
 
-    /home/marcel/programming/brian2/brian2/units/fundamentalunits.py in fail_for_dimension_mismatch(obj1, obj2, error_message)
+    /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in fail_for_dimension_mismatch(obj1, obj2, error_message)
         147         if error_message is None:
         148             error_message = 'Dimension mismatch'
     --> 149         raise DimensionMismatchError(error_message, dim1, dim2)
@@ -193,23 +200,23 @@ equation:
     ----> 4 G = NeuronGroup(1, eqs)
     
 
-    /home/marcel/programming/brian2/brian2/groups/neurongroup.py in __init__(self, N, model, method, threshold, reset, refractory, namespace, dtype, dt, clock, order, name, codeobj_class)
-        402         # can spot unit errors in the equation already here.
-        403         try:
-    --> 404             self.before_run(None)
-        405         except KeyError:
-        406             pass
+    /home/marcel/programming/brian2/brian2/groups/neurongroup.pyc in __init__(self, N, model, method, threshold, reset, refractory, namespace, dtype, dt, clock, order, name, codeobj_class)
+        403         # can spot unit errors in the equation already here.
+        404         try:
+    --> 405             self.before_run(None)
+        406         except KeyError:
+        407             pass
 
 
-    /home/marcel/programming/brian2/brian2/groups/neurongroup.py in before_run(self, run_namespace, level)
-        642         # Check units
-        643         self.equations.check_units(self, run_namespace=run_namespace,
-    --> 644                                    level=level+1)
-        645 
-        646     def _repr_html_(self):
+    /home/marcel/programming/brian2/brian2/groups/neurongroup.pyc in before_run(self, run_namespace, level)
+        643         # Check units
+        644         self.equations.check_units(self, run_namespace=run_namespace,
+    --> 645                                    level=level+1)
+        646 
+        647     def _repr_html_(self):
 
 
-    /home/marcel/programming/brian2/brian2/equations/equations.py in check_units(self, group, run_namespace, level)
+    /home/marcel/programming/brian2/brian2/equations/equations.pyc in check_units(self, group, run_namespace, level)
         861                                                   '\n%s') % (eq.varname,
         862                                                              ex.desc),
     --> 863                                                  *ex.dims)
@@ -306,12 +313,12 @@ time.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7fbe06d38690>
+    <matplotlib.text.Text at 0x7ff097050790>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_28_1.png
+.. image:: 1-intro-to-brian-neurons_image_30_1.png
 
 
 This time we only ran the simulation for 30 ms so that we can see the
@@ -337,12 +344,12 @@ just check that analytically by plotting the expected behaviour on top.
 
 .. parsed-literal::
 
-    <matplotlib.legend.Legend at 0x7fbe05b72d10>
+    <matplotlib.legend.Legend at 0x7ff095e9c510>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_30_1.png
+.. image:: 1-intro-to-brian-neurons_image_32_1.png
 
 
 As you can see, the blue (Brian) and dashed red (analytic solution)
@@ -383,12 +390,12 @@ the cell below.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7fbe05b55ad0>
+    <matplotlib.text.Text at 0x7ff096190cd0>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_32_1.png
+.. image:: 1-intro-to-brian-neurons_image_34_1.png
 
 
 Adding spikes
@@ -418,12 +425,12 @@ differential equations. Now let's start adding spiking behaviour.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7fbe06dc7150>
+    <matplotlib.text.Text at 0x7ff09612bd90>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_34_1.png
+.. image:: 1-intro-to-brian-neurons_image_36_1.png
 
 
 We've added two new keywords to the ``NeuronGroup`` declaration:
@@ -480,12 +487,12 @@ getting it right.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7fbe0531fe50>
+    <matplotlib.text.Text at 0x7ff095649a50>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_38_1.png
+.. image:: 1-intro-to-brian-neurons_image_40_1.png
 
 
 Here we've used the ``axvline`` command from ``matplotlib`` to draw a
@@ -529,12 +536,12 @@ how we do that in Brian.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7fbe0531fe10>
+    <matplotlib.text.Text at 0x7ff0956f6290>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_41_1.png
+.. image:: 1-intro-to-brian-neurons_image_43_1.png
 
 
 As you can see in this figure, after the first spike, ``v`` stays at 0
@@ -582,7 +589,7 @@ length of the refractory period to make the behaviour clearer.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_43_1.png
+.. image:: 1-intro-to-brian-neurons_image_45_1.png
 
 
 So what's going on here? The behaviour for the first spike is the same:
@@ -632,12 +639,12 @@ interesting with multiple neurons.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7fbe034d8e50>
+    <matplotlib.text.Text at 0x7ff0937e8b50>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_46_1.png
+.. image:: 1-intro-to-brian-neurons_image_48_1.png
 
 
 This shows a few changes. Firstly, we've got a new variable ``N``
@@ -695,12 +702,12 @@ attached to them.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7fbe027f4cd0>
+    <matplotlib.text.Text at 0x7ff092b21290>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_49_1.png
+.. image:: 1-intro-to-brian-neurons_image_51_1.png
 
 
 The line ``v0 : 1`` declares a new per-neuron parameter ``v0`` with
@@ -772,12 +779,12 @@ differential equations for more details).
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7fbe01ddb150>
+    <matplotlib.text.Text at 0x7ff0929db710>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_52_1.png
+.. image:: 1-intro-to-brian-neurons_image_54_1.png
 
 
 That's the same figure as in the previous section but with some noise
@@ -839,10 +846,10 @@ Synapses.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7fbe01c84f90>
+    <matplotlib.text.Text at 0x7ff0937dd650>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_55_1.png
+.. image:: 1-intro-to-brian-neurons_image_57_1.png
 

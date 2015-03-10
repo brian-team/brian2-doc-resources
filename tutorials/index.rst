@@ -1,4 +1,8 @@
 
+..
+    This is a generated file, do not edit directly.
+    (See dev/tools/docs/build_tutorials.py)
+
 Tutorials
 =========
 

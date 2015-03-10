@@ -2,6 +2,13 @@
 Introduction to Brian part 2: Synapses
 ======================================
 
+    .. note::
+       This tutorial is written as an interactive notebook that should be run
+       on your own computer. See the :doc:`tutorial overview page <index>` for
+       more details.
+
+       Download link for this tutorial: :download:`2-intro-to-brian-synapses.ipynb`.
+    
 If you haven't yet read part 1: Neurons, go read that now.
 
 As before we start by importing the Brian package and setting up
@@ -49,12 +56,12 @@ synapse that causes an instantaneous change in a variable after a spike.
 
 .. parsed-literal::
 
-    <matplotlib.legend.Legend at 0x7f56a0ce7fd0>
+    <matplotlib.legend.Legend at 0x7f51b14442d0>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_3_1.png
+.. image:: 2-intro-to-brian-synapses_image_5_1.png
 
 
 There are a few things going on here. First of all, let's recap what is
@@ -123,12 +130,12 @@ different synapses. We do that by introducing synapse equations.
 
 .. parsed-literal::
 
-    <matplotlib.legend.Legend at 0x7f569ff78f90>
+    <matplotlib.legend.Legend at 0x7f51b06cef50>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_6_1.png
+.. image:: 2-intro-to-brian-synapses_image_8_1.png
 
 
 This example behaves very similarly to the previous example, but now
@@ -184,12 +191,12 @@ act with a certain delay.
 
 .. parsed-literal::
 
-    <matplotlib.legend.Legend at 0x7f569fc53410>
+    <matplotlib.legend.Legend at 0x7f51b042a490>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_9_1.png
+.. image:: 2-intro-to-brian-synapses_image_11_1.png
 
 
 As you can see, that's as simple as adding a line ``S.delay = 'j*2*ms'``
@@ -245,7 +252,7 @@ visualise it.
     visualise_connectivity(S)
 
 
-.. image:: 2-intro-to-brian-synapses_image_14_0.png
+.. image:: 2-intro-to-brian-synapses_image_16_0.png
 
 
 There are two plots here. On the left hand side, you see a vertical line
@@ -272,15 +279,15 @@ connection:
         suptitle('p = '+str(p))
 
 
-.. image:: 2-intro-to-brian-synapses_image_16_0.png
+.. image:: 2-intro-to-brian-synapses_image_18_0.png
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_16_1.png
+.. image:: 2-intro-to-brian-synapses_image_18_1.png
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_16_2.png
+.. image:: 2-intro-to-brian-synapses_image_18_2.png
 
 
 And let's see what another connectivity condition looks like. This one
@@ -298,7 +305,7 @@ will only connect neighbouring neurons.
     visualise_connectivity(S)
 
 
-.. image:: 2-intro-to-brian-synapses_image_18_0.png
+.. image:: 2-intro-to-brian-synapses_image_20_0.png
 
 
 Try using that cell to see how other connectivity conditions look like.
@@ -335,12 +342,12 @@ synapse by the size of the marker.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7f569cf8bf90>
+    <matplotlib.text.Text at 0x7f51ad6ebc10>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_21_1.png
+.. image:: 2-intro-to-brian-synapses_image_23_1.png
 
 
 Now try changing that function and seeing how the plot changes.
@@ -387,12 +394,12 @@ This function looks like this:
 
 .. parsed-literal::
 
-    <matplotlib.lines.Line2D at 0x7f569ed39c90>
+    <matplotlib.lines.Line2D at 0x7f51af4b1310>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_23_1.png
+.. image:: 2-intro-to-brian-synapses_image_25_1.png
 
 
 Simulating it directly using this equation though would be very
@@ -535,12 +542,12 @@ arrives some time before a postsynaptic spike.
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7f569eb397d0>
+    <matplotlib.text.Text at 0x7f51af39f6d0>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_27_1.png
+.. image:: 2-intro-to-brian-synapses_image_29_1.png
 
 
 A couple of things to note here. First of all, we've used a trick to
@@ -602,12 +609,12 @@ original one.
 
 .. parsed-literal::
 
-    <matplotlib.lines.Line2D at 0x7f569f1a1c10>
+    <matplotlib.lines.Line2D at 0x7f51aff1d0d0>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_29_1.png
+.. image:: 2-intro-to-brian-synapses_image_31_1.png
 
 
 Can you see how this works?
