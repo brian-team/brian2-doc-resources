@@ -2,6 +2,7 @@
 Introduction to Brian part 2: Synapses
 ======================================
 
+
     .. note::
        This tutorial is written as an interactive notebook that should be run
        on your own computer. See the :doc:`tutorial overview page <index>` for
@@ -9,6 +10,7 @@ Introduction to Brian part 2: Synapses
 
        Download link for this tutorial: :download:`2-intro-to-brian-synapses.ipynb`.
     
+
 If you haven't yet read part 1: Neurons, go read that now.
 
 As before we start by importing the Brian package and setting up
@@ -18,6 +20,7 @@ matplotlib for IPython:
 
     from brian2 import *
     %matplotlib inline
+
 The simplest Synapse
 --------------------
 
@@ -39,8 +42,8 @@ synapse that causes an instantaneous change in a variable after a spike.
     G.tau = [10, 100]*ms
     
     # Comment these two lines out to see what happens without Synapses
-    S = Synapses(G, G, pre='v_post += 0.2')
-    S.connect(0, 1)
+    S = Synapses(G, G, on_pre='v_post += 0.2')
+    S.connect(i=0, j=1)
     
     M = StateMonitor(G, 'v', record=True)
     
@@ -53,15 +56,21 @@ synapse that causes an instantaneous change in a variable after a spike.
     legend(loc='best')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.04s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.legend.Legend at 0x7f51b14442d0>
+    <matplotlib.legend.Legend at 0x7f6b5a75e2d0>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_5_1.png
+.. image:: 2-intro-to-brian-synapses_image_5_2.png
 
 
 There are a few things going on here. First of all, let's recap what is
@@ -77,8 +86,8 @@ synapse.
 Next we define the synapses: ``Synapses(source, target, ...)`` means
 that we are defining a synaptic model that goes from ``source`` to
 ``target``. In this case, the source and target are both the same, the
-group ``G``. The syntax ``pre='v_post += 0.2'`` means that when a spike
-occurs in the presynaptic neuron (hence ``pre``) it causes an
+group ``G``. The syntax ``on_pre='v_post += 0.2'`` means that when a
+spike occurs in the presynaptic neuron (hence ``on_pre``) it causes an
 instantaneous change to happen ``v_post += 0.2``. The ``_post`` means
 that the value of ``v`` referred to is the post-synaptic value, and it
 is increased by 0.2. So in total, what this model says is that whenever
@@ -87,8 +96,8 @@ fires a spike the target neuron will have its value of ``v`` increased
 by 0.2.
 
 However, at this point we have only defined the synapse model, we
-haven't actually created any synapses. The next line ``S.connect(0,1)``
-creates a synapse from neuron 0 to neuron 1.
+haven't actually created any synapses. The next line
+``S.connect(i=0, j=1)`` creates a synapse from neuron 0 to neuron 1.
 
 Adding a weight
 ---------------
@@ -111,8 +120,8 @@ different synapses. We do that by introducing synapse equations.
     G.tau = [10, 100, 100]*ms
     
     # Comment these two lines out to see what happens without Synapses
-    S = Synapses(G, G, 'w : 1', pre='v_post += w')
-    S.connect(0, [1, 2])
+    S = Synapses(G, G, 'w : 1', on_pre='v_post += w')
+    S.connect(i=0, j=[1, 2])
     S.w = 'j*0.2'
     
     M = StateMonitor(G, 'v', record=True)
@@ -127,22 +136,28 @@ different synapses. We do that by introducing synapse equations.
     legend(loc='best')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.legend.Legend at 0x7f51b06cef50>
+    <matplotlib.legend.Legend at 0x7f6b59ff73d0>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_8_1.png
+.. image:: 2-intro-to-brian-synapses_image_8_2.png
 
 
 This example behaves very similarly to the previous example, but now
 there's a synaptic weight variable ``w``. The string ``'w : 1'`` is an
 equation string, precisely the same as for neurons, that defines a
 single dimensionless parameter ``w``. We changed the behaviour on a
-spike to ``pre='v_post += w'`` now, so that each synapse can behave
+spike to ``on_pre='v_post += w'`` now, so that each synapse can behave
 differently depending on the value of ``w``. To illustrate this, we've
 made a third neuron which behaves precisely the same as the second
 neuron, and connected neuron 0 to both neurons 1 and 2. We've also set
@@ -171,8 +186,8 @@ act with a certain delay.
     G.I = [2, 0, 0]
     G.tau = [10, 100, 100]*ms
     
-    S = Synapses(G, G, 'w : 1', pre='v_post += w')
-    S.connect(0, [1, 2])
+    S = Synapses(G, G, 'w : 1', on_pre='v_post += w')
+    S.connect(i=0, j=[1, 2])
     S.w = 'j*0.2'
     S.delay = 'j*2*ms'
     
@@ -188,15 +203,21 @@ act with a certain delay.
     legend(loc='best')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.legend.Legend at 0x7f51b042a490>
+    <matplotlib.legend.Legend at 0x7f6b5949f8d0>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_11_1.png
+.. image:: 2-intro-to-brian-synapses_image_11_2.png
 
 
 As you can see, that's as simple as adding a line ``S.delay = 'j*2*ms'``
@@ -217,15 +238,14 @@ to specify some condition.
     N = 10
     G = NeuronGroup(N, 'v:1')
     S = Synapses(G, G)
-    S.connect('i!=j', p=0.2)
+    S.connect(condition='i!=j', p=0.2)
+
 Here we've created a dummy neuron group of N neurons and a dummy
 synapses model that doens't actually do anything just to demonstrate the
-connectivity. The line ``S.connect('i!=j', p=0.2)`` will connect all
-pairs of neurons ``i`` and ``j`` with probability 0.2 as long as the
-condition ``i!=j`` holds. You could equivalently write
-``S.connect('i!=j and rand()<0.2')`` if you wanted to. So, how can we
-see that connectivity? Here's a little function that will let us
-visualise it.
+connectivity. The line ``S.connect(condition='i!=j', p=0.2)`` will
+connect all pairs of neurons ``i`` and ``j`` with probability 0.2 as
+long as the condition ``i!=j`` holds. So, how can we see that
+connectivity? Here's a little function that will let us visualise it.
 
 .. code:: python
 
@@ -252,6 +272,7 @@ visualise it.
     visualise_connectivity(S)
 
 
+
 .. image:: 2-intro-to-brian-synapses_image_16_0.png
 
 
@@ -274,9 +295,10 @@ connection:
     
     for p in [0.1, 0.5, 1.0]:
         S = Synapses(G, G)
-        S.connect('i!=j', p=p)
+        S.connect(condition='i!=j', p=p)
         visualise_connectivity(S)
         suptitle('p = '+str(p))
+
 
 
 .. image:: 2-intro-to-brian-synapses_image_18_0.png
@@ -301,8 +323,9 @@ will only connect neighbouring neurons.
     G = NeuronGroup(N, 'v:1')
     
     S = Synapses(G, G)
-    S.connect('abs(i-j)<4 and i!=j')
+    S.connect(condition='abs(i-j)<4 and i!=j')
     visualise_connectivity(S)
+
 
 
 .. image:: 2-intro-to-brian-synapses_image_20_0.png
@@ -310,11 +333,52 @@ will only connect neighbouring neurons.
 
 Try using that cell to see how other connectivity conditions look like.
 
-This way of specifying connectivity is very general, and can also be
-used for specifying the value of weights for example. Let's see an
-example where we assign each neuron a spatial location and have a
-distance-dependent connectivity function. We visualise the weight of a
-synapse by the size of the marker.
+You can also use the generator syntax to create connections like this
+more efficiently. In small examples like this, it doesn't matter, but
+for large numbers of neurons it can be much more efficient to specify
+directly which neurons should be connected than to specify just a
+condition.
+
+.. code:: python
+
+    start_scope()
+    
+    N = 10
+    G = NeuronGroup(N, 'v:1')
+    
+    S = Synapses(G, G)
+    S.connect(j='k for k in range(clip(i-3, 0, N_post), clip(i+4, 0, N_post)) if i!=k')
+    visualise_connectivity(S)
+
+
+
+.. image:: 2-intro-to-brian-synapses_image_23_0.png
+
+
+If each source neuron is connected to precisely one target neuron, there
+is a special syntax that is extremely efficient. For example, 1-to-1
+connectivity looks like this:
+
+.. code:: python
+
+    start_scope()
+    
+    N = 10
+    G = NeuronGroup(N, 'v:1')
+    
+    S = Synapses(G, G)
+    S.connect(j='i')
+    visualise_connectivity(S)
+
+
+
+.. image:: 2-intro-to-brian-synapses_image_25_0.png
+
+
+You can also do things like specifying the value of weights with a
+string. Let's see an example where we assign each neuron a spatial
+location and have a distance-dependent connectivity function. We
+visualise the weight of a synapse by the size of the marker.
 
 .. code:: python
 
@@ -330,7 +394,7 @@ synapse by the size of the marker.
     
     # All synapses are connected (excluding self-connections)
     S = Synapses(G, G, 'w : 1')
-    S.connect('i!=j')
+    S.connect(condition='i!=j')
     # Weight varies with distance
     S.w = 'exp(-(x_pre-x_post)**2/(2*width**2))'
     
@@ -340,14 +404,15 @@ synapse by the size of the marker.
 
 
 
+
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7f51ad6ebc10>
+    <matplotlib.text.Text at 0x7f6b58da4a90>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_23_1.png
+.. image:: 2-intro-to-brian-synapses_image_27_1.png
 
 
 Now try changing that function and seeing how the plot changes.
@@ -392,14 +457,15 @@ This function looks like this:
 
 
 
+
 .. parsed-literal::
 
-    <matplotlib.lines.Line2D at 0x7f51af4b1310>
+    <matplotlib.lines.Line2D at 0x7f6b58b43c50>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_25_1.png
+.. image:: 2-intro-to-brian-synapses_image_29_1.png
 
 
 Simulating it directly using this equation though would be very
@@ -455,7 +521,7 @@ equations and spike events, we can turn that into Brian code.
     Apre = 0.01
     Apost = -Apre*taupre/taupost*1.05
     
-    G = NeuronGroup(1, 'v:1')
+    G = NeuronGroup(1, 'v:1', threshold='v>1')
     
     S = Synapses(G, G,
                  '''
@@ -463,15 +529,16 @@ equations and spike events, we can turn that into Brian code.
                  dapre/dt = -apre/taupre : 1 (event-driven)
                  dapost/dt = -apost/taupost : 1 (event-driven)
                  ''',
-                 pre='''
+                 on_pre='''
                  v_post += w
                  apre += Apre
                  w = clip(w+apost, 0, wmax)
                  ''',
-                 post='''
+                 on_post='''
                  apost += Apost
                  w = clip(w+apre, 0, wmax)
                  ''')
+
 There are a few things to see there. Firstly, when defining the synapses
 we've given a more complicated multi-line string defining three synaptic
 variables (``w``, ``apre`` and ``apost``). We've also got a new bit of
@@ -482,17 +549,18 @@ event (a spike). This is because we don't need the values of ``apre``
 and ``apost`` except at spike times, and it is more efficient to only
 update them when needed.
 
-Next we have a ``pre=...`` argument. The first line is ``v_post += w``:
-this is the line that actually applies the synaptic weight to the target
-neuron. The second line is ``apre += Apre`` which encodes the rule
-above. In the third line, we're also encoding the rule above but we've
-added one extra feature: we've clamped the synaptic weights between a
-minimum of 0 and a maximum of ``wmax`` so that the weights can't get too
-large or negative. The function ``clip(x, low, high)`` does this.
+Next we have a ``on_pre=...`` argument. The first line is
+``v_post += w``: this is the line that actually applies the synaptic
+weight to the target neuron. The second line is ``apre += Apre`` which
+encodes the rule above. In the third line, we're also encoding the rule
+above but we've added one extra feature: we've clamped the synaptic
+weights between a minimum of 0 and a maximum of ``wmax`` so that the
+weights can't get too large or negative. The function
+``clip(x, low, high)`` does this.
 
-Finally, we have a ``post=...`` argument. This gives the statements to
-calculate when a post-synaptic neuron fires. Note that we do not modify
-``v`` in this case, only the synaptic variables.
+Finally, we have a ``on_post=...`` argument. This gives the statements
+to calculate when a post-synaptic neuron fires. Note that we do not
+modify ``v`` in this case, only the synaptic variables.
 
 Now let's see how all the variables behave when a presynaptic spike
 arrives some time before a postsynaptic spike.
@@ -511,19 +579,19 @@ arrives some time before a postsynaptic spike.
     S = Synapses(G, G,
                  '''
                  w : 1
-                 dapre/dt = -apre/taupre : 1
-                 dapost/dt = -apost/taupost : 1
+                 dapre/dt = -apre/taupre : 1 (clock-driven)
+                 dapost/dt = -apost/taupost : 1 (clock-driven)
                  ''',
-                 pre='''
+                 on_pre='''
                  v_post += w
                  apre += Apre
                  w = clip(w+apost, 0, wmax)
                  ''',
-                 post='''
+                 on_post='''
                  apost += Apost
                  w = clip(w+apre, 0, wmax)
                  ''')
-    S.connect(0, 1)
+    S.connect(i=0, j=1)
     M = StateMonitor(S, ['w', 'apre', 'apost'], record=True)
     
     run(30*ms)
@@ -539,24 +607,31 @@ arrives some time before a postsynaptic spike.
     xlabel('Time (ms)')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_2', using method 'linear' (took 0.00s). [brian2.stateupdaters.base.method_choice]
+    INFO       No numerical integration method specified for group 'synapses', using method 'linear' (took 0.14s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7f51af39f6d0>
+    <matplotlib.text.Text at 0x7f6b58775990>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_29_1.png
+.. image:: 2-intro-to-brian-synapses_image_33_2.png
 
 
 A couple of things to note here. First of all, we've used a trick to
 make neuron 0 fire a spike at time 10 ms, and neuron 1 at time 20 ms.
 Can you see how that works?
 
-Secondly, we've removed the ``(event-driven)`` from the equations so you
-can see how ``apre`` and ``apost`` evolve over time. Try putting them
-back in and see what happens.
+Secondly, we've replaced the ``(event-driven)`` by ``(clock-driven)`` so
+you can see how ``apre`` and ``apost`` evolve over time. Try reverting
+this change and see what happens.
 
 Try changing the times of the spikes to see what happens.
 
@@ -587,15 +662,15 @@ original one.
                  dapre/dt = -apre/taupre : 1 (event-driven)
                  dapost/dt = -apost/taupost : 1 (event-driven)
                  ''',
-                 pre='''
+                 on_pre='''
                  apre += Apre
                  w = w+apost
                  ''',
-                 post='''
+                 on_post='''
                  apost += Apost
                  w = w+apre
                  ''')
-    S.connect('i==j')
+    S.connect(j='i')
     
     run(tmax+1*ms)
     
@@ -606,15 +681,22 @@ original one.
     axhline(0, ls='-', c='k')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.00s). [brian2.stateupdaters.base.method_choice]
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.00s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.lines.Line2D at 0x7f51aff1d0d0>
+    <matplotlib.lines.Line2D at 0x7f6b58fab110>
 
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_31_1.png
+.. image:: 2-intro-to-brian-synapses_image_35_2.png
 
 
 Can you see how this works?

@@ -2,6 +2,7 @@
 Introduction to Brian part 1: Neurons
 =====================================
 
+
     .. note::
        This tutorial is written as an interactive notebook that should be run
        on your own computer. See the :doc:`tutorial overview page <index>` for
@@ -9,18 +10,21 @@ Introduction to Brian part 1: Neurons
 
        Download link for this tutorial: :download:`1-intro-to-brian-neurons.ipynb`.
     
+
 All Brian scripts start with the following. If you're trying this
 notebook out in IPython, you should start by running this cell.
 
 .. code:: python
 
     from brian2 import *
+
 Later we'll do some plotting in the notebook, so we activate inline
 plotting in the IPython notebook by doing this:
 
 .. code:: python
 
     %matplotlib inline
+
 Units system
 ------------
 
@@ -29,6 +33,7 @@ Brian has a system for using quantities with physical dimensions:
 .. code:: python
 
     print 20*volt
+
 
 .. parsed-literal::
 
@@ -43,6 +48,7 @@ abbreviations like ``mV`` for millivolt, ``pF`` for picofarad, etc.
 
     print 1000*amp
 
+
 .. parsed-literal::
 
     1. kA
@@ -52,6 +58,7 @@ abbreviations like ``mV`` for millivolt, ``pF`` for picofarad, etc.
 
     print 1e6*volt
 
+
 .. parsed-literal::
 
     1. MV
@@ -60,6 +67,7 @@ abbreviations like ``mV`` for millivolt, ``pF`` for picofarad, etc.
 .. code:: python
 
     print 1000*namp
+
 
 .. parsed-literal::
 
@@ -71,6 +79,7 @@ Also note that combinations of units with work as expected:
 .. code:: python
 
     print 10*nA*5*Mohm
+
 
 .. parsed-literal::
 
@@ -84,6 +93,7 @@ happens?
 
     print 5*amp+10*volt
 
+
 ::
 
 
@@ -96,30 +106,30 @@ happens?
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in __add__(self, other)
-       1301         return self._binary_operation(other, operator.add,
-       1302                                       fail_for_mismatch=True,
-    -> 1303                                       message='Addition')
-       1304 
-       1305     def __radd__(self, other):
+       1408         return self._binary_operation(other, operator.add,
+       1409                                       fail_for_mismatch=True,
+    -> 1410                                       operator_str='+')
+       1411 
+       1412     def __radd__(self, other):
 
 
-    /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in _binary_operation(self, other, operation, dim_operation, fail_for_mismatch, message, inplace)
-       1249 
-       1250         if fail_for_mismatch:
-    -> 1251             fail_for_dimension_mismatch(self, other, message)
-       1252 
-       1253         if inplace:
+    /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in _binary_operation(self, other, operation, dim_operation, fail_for_mismatch, operator_str, inplace)
+       1348                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
+       1349                                                            value1=self,
+    -> 1350                                                            value2=other)
+       1351 
+       1352         if other_dim is None:
 
 
-    /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in fail_for_dimension_mismatch(obj1, obj2, error_message)
-        147         if error_message is None:
-        148             error_message = 'Dimension mismatch'
-    --> 149         raise DimensionMismatchError(error_message, dim1, dim2)
-        150 
-        151 
+    /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in fail_for_dimension_mismatch(obj1, obj2, error_message, **error_quantities)
+        183             raise DimensionMismatchError(error_message, dim1)
+        184         else:
+    --> 185             raise DimensionMismatchError(error_message, dim1, dim2)
+        186     else:
+        187         return dim1, dim2
 
 
-    DimensionMismatchError: Addition, dimensions were (A) (m^2 kg s^-3 A^-1)
+    DimensionMismatchError: Cannot calculate 5. A + 10. V, units do not match (units are amp and volt).
 
 
 If you haven't see an error message in Python before that can look a bit
@@ -161,6 +171,7 @@ what that looks like:
     eqs = '''
     dv/dt = (1-v)/tau : 1
     '''
+
 In Python, the notation ``'''`` is used to begin and end a multi-line
 string. So the equations are just a string with one line per equation.
 The equations are formatted with standard mathematical notation, with
@@ -172,6 +183,7 @@ Now let's use this definition to create a neuron.
 .. code:: python
 
     G = NeuronGroup(1, eqs)
+
 In Brian, you only create groups of neurons, using the class
 ``NeuronGroup``. The first two arguments when you create one of these
 objects are the number of neurons (in this case, 1) and the defining
@@ -186,47 +198,6 @@ equation:
     dv/dt = 1-v : 1
     '''
     G = NeuronGroup(1, eqs)
-
-::
-
-
-    ---------------------------------------------------------------------------
-
-    DimensionMismatchError                    Traceback (most recent call last)
-
-    <ipython-input-11-70d526e22e27> in <module>()
-          2 dv/dt = 1-v : 1
-          3 '''
-    ----> 4 G = NeuronGroup(1, eqs)
-    
-
-    /home/marcel/programming/brian2/brian2/groups/neurongroup.pyc in __init__(self, N, model, method, threshold, reset, refractory, namespace, dtype, dt, clock, order, name, codeobj_class)
-        403         # can spot unit errors in the equation already here.
-        404         try:
-    --> 405             self.before_run(None)
-        406         except KeyError:
-        407             pass
-
-
-    /home/marcel/programming/brian2/brian2/groups/neurongroup.pyc in before_run(self, run_namespace, level)
-        643         # Check units
-        644         self.equations.check_units(self, run_namespace=run_namespace,
-    --> 645                                    level=level+1)
-        646 
-        647     def _repr_html_(self):
-
-
-    /home/marcel/programming/brian2/brian2/equations/equations.pyc in check_units(self, group, run_namespace, level)
-        861                                                   '\n%s') % (eq.varname,
-        862                                                              ex.desc),
-    --> 863                                                  *ex.dims)
-        864             elif eq.type == SUBEXPRESSION:
-        865                 try:
-
-
-    DimensionMismatchError: Inconsistent units in differential equation defining variable v:
-    Expression 1-v  does not have the expected units, dimensions were (1) (s^-1)
-
 
 An error is raised, but why? The reason is that the differential
 equation is now dimensionally inconsistent. The left hand side ``dv/dt``
@@ -252,6 +223,13 @@ Now let's go back to the good equations and actually run the simulation.
     
     G = NeuronGroup(1, eqs)
     run(100*ms)
+
+
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.04s). [brian2.stateupdaters.base.method_choice]
+
+
 First off, ignore that ``start_scope()`` at the top of the cell. You'll
 see that in each cell in this tutorial where we run a simulation. All it
 does is make sure that any Brian objects created before the function is
@@ -270,6 +248,12 @@ value of the variable ``v`` before and after the simulation.
     run(100*ms)
     print 'After v =', G.v[0]
 
+
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
+
 .. parsed-literal::
 
     Before v = 0.0
@@ -285,6 +269,7 @@ that's right.
 .. code:: python
 
     print 'Expected value of v =', 1-exp(-100*ms/tau)
+
 
 .. parsed-literal::
 
@@ -310,15 +295,21 @@ time.
     ylabel('v')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7ff097050790>
+    <matplotlib.text.Text at 0x7f629a56d210>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_30_1.png
+.. image:: 1-intro-to-brian-neurons_image_30_2.png
 
 
 This time we only ran the simulation for 30 ms so that we can see the
@@ -341,15 +332,21 @@ just check that analytically by plotting the expected behaviour on top.
     legend(loc='best')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.legend.Legend at 0x7ff095e9c510>
+    <matplotlib.legend.Legend at 0x7f629762ee90>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_32_1.png
+.. image:: 1-intro-to-brian-neurons_image_32_2.png
 
 
 As you can see, the blue (Brian) and dashed red (analytic solution)
@@ -388,9 +385,10 @@ the cell below.
 
 
 
+
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7ff096190cd0>
+    <matplotlib.text.Text at 0x7f62973b6dd0>
 
 
 
@@ -422,15 +420,21 @@ differential equations. Now let's start adding spiking behaviour.
     ylabel('v')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7ff09612bd90>
+    <matplotlib.text.Text at 0x7f62971124d0>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_36_1.png
+.. image:: 1-intro-to-brian-neurons_image_36_2.png
 
 
 We've added two new keywords to the ``NeuronGroup`` declaration:
@@ -455,6 +459,12 @@ registered this event as a spike. Let's have a look at that.
     run(50*ms)
     
     print 'Spike times:', spikemon.t[:]
+
+
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
 
 .. parsed-literal::
 
@@ -484,15 +494,21 @@ getting it right.
     ylabel('v')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_2', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7ff095649a50>
+    <matplotlib.text.Text at 0x7f6296bff190>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_40_1.png
+.. image:: 1-intro-to-brian-neurons_image_40_2.png
 
 
 Here we've used the ``axvline`` command from ``matplotlib`` to draw a
@@ -533,15 +549,21 @@ how we do that in Brian.
     ylabel('v')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.03s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7ff0956f6290>
+    <matplotlib.text.Text at 0x7f6296bac090>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_43_1.png
+.. image:: 1-intro-to-brian-neurons_image_43_2.png
 
 
 As you can see in this figure, after the first spike, ``v`` stays at 0
@@ -583,13 +605,19 @@ length of the refractory period to make the behaviour clearer.
     ylabel('v')
     print "Spike times:", spikemon.t[:]
 
+
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_2', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
+
 .. parsed-literal::
 
     Spike times: [  8.   23.1  38.2] ms
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_45_1.png
+.. image:: 1-intro-to-brian-neurons_image_45_2.png
 
 
 So what's going on here? The behaviour for the first spike is the same:
@@ -636,15 +664,21 @@ interesting with multiple neurons.
     ylabel('Neuron index')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7ff0937e8b50>
+    <matplotlib.text.Text at 0x7f6294cba590>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_48_1.png
+.. image:: 1-intro-to-brian-neurons_image_48_2.png
 
 
 This shows a few changes. Firstly, we've got a new variable ``N``
@@ -699,15 +733,21 @@ attached to them.
     ylabel('Firing rate (sp/s)')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_3', using method 'linear' (took 0.03s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7ff092b21290>
+    <matplotlib.text.Text at 0x7f6293ffdf10>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_51_1.png
+.. image:: 1-intro-to-brian-neurons_image_51_2.png
 
 
 The line ``v0 : 1`` declares a new per-neuron parameter ``v0`` with
@@ -776,15 +816,21 @@ differential equations for more details).
     ylabel('Firing rate (sp/s)')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'euler' (took 0.02s, trying other methods took 0.00s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7ff0929db710>
+    <matplotlib.text.Text at 0x7f6293eb2750>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_54_1.png
+.. image:: 1-intro-to-brian-neurons_image_54_2.png
 
 
 That's the same figure as in the previous section but with some noise
@@ -843,13 +889,19 @@ Synapses.
     ylabel('Instantaneous firing rate (sp/s)')
 
 
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup_3', using method 'euler' (took 0.02s, trying other methods took 0.00s). [brian2.stateupdaters.base.method_choice]
+
+
+
 
 .. parsed-literal::
 
-    <matplotlib.text.Text at 0x7ff0937dd650>
+    <matplotlib.text.Text at 0x7f6293545d10>
 
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_57_1.png
+.. image:: 1-intro-to-brian-neurons_image_57_2.png
 
