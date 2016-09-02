@@ -6,14 +6,15 @@
 Tutorials
 =========
 
-The tutorial consists of a series of `Jupyter Notebooks`_ [#]_. If you run such
-a notebook on your own computer, you can interactively change the code in the
-tutorial and experiment with it -- this is the recommended way to get started
-with Brian. The first link for each tutorial below leads to a non-interactive
-version of the notebook; use the links under "Notebook files" to get a file that
-you can run on your computer. You can also copy such a link and paste it at
-http://nbviewer.jupyter.org -- this will get you a nicer (but still
-non-interactive) rendering than the one you see in our documentation.
+The tutorial consists of a series of `Jupyter Notebooks`_ [#]_. You can quickly
+view these using the first links below. To use them interactively - allowing you
+to edit and run the code - there are two options. The easiest option is to click
+on the "Launch Binder" link, which will open up an interactive version in the
+browser without having to install Brian locally. This uses the
+Binder service provided by the
+`Freeman lab <https://www.janelia.org/lab/freeman-lab>`_. Occasionally, this
+service will be down or running slowly. The other option is to download the
+notebook file and run it locally, which requires you to have Brian installed.
 
 For more information about how to use Jupyter Notebooks, see the
 `Jupyter Notebook documentation`_.
@@ -26,10 +27,18 @@ For more information about how to use Jupyter Notebooks, see the
    2-intro-to-brian-synapses
 
 
-Notebook files
---------------
-* :download:`Introduction to Brian part 1: Neurons <1-intro-to-brian-neurons.ipynb>`
-* :download:`Introduction to Brian part 2: Synapses <2-intro-to-brian-synapses.ipynb>`
+Interactive notebooks and files
+-------------------------------
+
+.. |launchbinder1introtobrianneurons| image:: http://mybinder.org/badge.svg
+.. _launchbinder1introtobrianneurons: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/1-intro-to-brian-neurons.ipynb
+
+
+.. |launchbinder2introtobriansynapses| image:: http://mybinder.org/badge.svg
+.. _launchbinder2introtobriansynapses: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/2-intro-to-brian-synapses.ipynb
+
+* |launchbinder1introtobrianneurons|_ :download:`Introduction to Brian part 1: Neurons <1-intro-to-brian-neurons.ipynb>`
+* |launchbinder2introtobriansynapses|_ :download:`Introduction to Brian part 2: Synapses <2-intro-to-brian-synapses.ipynb>`
 
 
 .. _`Jupyter Notebooks`: http://jupyter-notebook-beginner-guide.readthedocs.org/en/latest/what_is_jupyter.html

@@ -3,13 +3,20 @@ Introduction to Brian part 1: Neurons
 =====================================
 
 
-    .. note::
-       This tutorial is written as an interactive notebook that should be run
-       on your own computer. See the :doc:`tutorial overview page <index>` for
-       more details.
+.. |launchbinder| image:: http://mybinder.org/badge.svg
+.. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/1-intro-to-brian-neurons.ipynb
 
-       Download link for this tutorial: :download:`1-intro-to-brian-neurons.ipynb`.
-    
+.. note::
+   This tutorial is a static non-editable version. You can launch an
+   interactive, editable version without installing any local files
+   using the Binder service (although note that at some times this
+   may be slow or fail to open): |launchbinder|_
+
+   Alternatively, you can download a copy of the notebook file
+   to use locally: :download:`1-intro-to-brian-neurons.ipynb`
+
+   See the :doc:`tutorial overview page <index>` for more details.
+
 
 All Brian scripts start with the following. If you're trying this
 notebook out in IPython, you should start by running this cell.
@@ -32,12 +39,15 @@ Brian has a system for using quantities with physical dimensions:
 
 .. code:: python
 
-    print 20*volt
+    20*volt
 
 
-.. parsed-literal::
 
-    20. V
+
+.. math::
+
+    20.0\,\mathrm{V}
+
 
 
 All of the basic SI units can be used (volt, amp, etc.) along with all
@@ -46,44 +56,56 @@ abbreviations like ``mV`` for millivolt, ``pF`` for picofarad, etc.
 
 .. code:: python
 
-    print 1000*amp
+    1000*amp
 
 
-.. parsed-literal::
-
-    1. kA
 
 
-.. code:: python
+.. math::
 
-    print 1e6*volt
+    1.0\,\mathrm{k}\,\mathrm{A}
 
-
-.. parsed-literal::
-
-    1. MV
 
 
 .. code:: python
 
-    print 1000*namp
+    1e6*volt
 
 
-.. parsed-literal::
 
-    1. uA
+
+.. math::
+
+    1.0\,\mathrm{M}\,\mathrm{V}
+
+
+
+.. code:: python
+
+    1000*namp
+
+
+
+
+.. math::
+
+    1.0\,\mathrm{\mu}\,\mathrm{A}
+
 
 
 Also note that combinations of units with work as expected:
 
 .. code:: python
 
-    print 10*nA*5*Mohm
+    10*nA*5*Mohm
 
 
-.. parsed-literal::
 
-    50. mV
+
+.. math::
+
+    50.0\,\mathrm{m}\,\mathrm{V}
+
 
 
 And if you try to do something wrong like adding amps and volts, what
@@ -91,18 +113,18 @@ happens?
 
 .. code:: python
 
-    print 5*amp+10*volt
+    5*amp+10*volt
 
 
 ::
 
 
-    ---------------------------------------------------------------------------
+    
 
-    DimensionMismatchError                    Traceback (most recent call last)
+    DimensionMismatchErrorTraceback (most recent call last)
 
-    <ipython-input-8-a44fa670700d> in <module>()
-    ----> 1 print 5*amp+10*volt
+    <ipython-input-8-ad1fc5691a4b> in <module>()
+    ----> 1 5*amp+10*volt
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in __add__(self, other)
@@ -198,6 +220,106 @@ equation:
     dv/dt = 1-v : 1
     '''
     G = NeuronGroup(1, eqs)
+    run(100*ms)
+
+
+::
+
+
+    
+
+    BrianObjectExceptionTraceback (most recent call last)
+
+    <ipython-input-11-d086eea0b2de> in <module>()
+          3 '''
+          4 G = NeuronGroup(1, eqs)
+    ----> 5 run(100*ms)
+    
+
+    /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
+       2386                         raise DimensionMismatchError(error_message,
+       2387                                                      newkeyset[k])
+    -> 2388             result = f(*args, **kwds)
+       2389             if 'result' in au:
+       2390                 if not have_same_dimensions(result, au['result']):
+
+
+    /home/marcel/programming/brian2/brian2/core/magic.pyc in run(duration, report, report_period, namespace, profile, level)
+        369     '''
+        370     return magic_network.run(duration, report=report, report_period=report_period,
+    --> 371                              namespace=namespace, profile=profile, level=2+level)
+        372 run.__module__ = __name__
+        373 
+
+
+    /home/marcel/programming/brian2/brian2/core/magic.pyc in run(self, duration, report, report_period, namespace, profile, level)
+        229         self._update_magic_objects(level=level+1)
+        230         Network.run(self, duration, report=report, report_period=report_period,
+    --> 231                     namespace=namespace, profile=profile, level=level+1)
+        232 
+        233     def store(self, name='default', filename=None, level=0):
+
+
+    /home/marcel/programming/brian2/brian2/core/base.pyc in device_override_decorated_function(*args, **kwds)
+        276                 return getattr(curdev, name)(*args, **kwds)
+        277             else:
+    --> 278                 return func(*args, **kwds)
+        279 
+        280         device_override_decorated_function.__doc__ = func.__doc__
+
+
+    /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
+       2386                         raise DimensionMismatchError(error_message,
+       2387                                                      newkeyset[k])
+    -> 2388             result = f(*args, **kwds)
+       2389             if 'result' in au:
+       2390                 if not have_same_dimensions(result, au['result']):
+
+
+    /home/marcel/programming/brian2/brian2/core/network.pyc in run(self, duration, report, report_period, namespace, profile, level)
+        786             namespace = get_local_namespace(level=level+3)
+        787 
+    --> 788         self.before_run(namespace)
+        789 
+        790         if len(self.objects)==0:
+
+
+    /home/marcel/programming/brian2/brian2/core/base.pyc in device_override_decorated_function(*args, **kwds)
+        276                 return getattr(curdev, name)(*args, **kwds)
+        277             else:
+    --> 278                 return func(*args, **kwds)
+        279 
+        280         device_override_decorated_function.__doc__ = func.__doc__
+
+
+    /home/marcel/programming/brian2/brian2/core/network.pyc in before_run(self, run_namespace)
+        686                     obj.before_run(run_namespace)
+        687                 except Exception as ex:
+    --> 688                     raise brian_object_exception("An error occurred when preparing an object.", obj, ex)
+        689 
+        690         # Check that no object has been run as part of another network before
+
+
+    BrianObjectException: Original error and traceback:
+    Traceback (most recent call last):
+      File "/home/marcel/programming/brian2/brian2/core/network.py", line 686, in before_run
+        obj.before_run(run_namespace)
+      File "/home/marcel/programming/brian2/brian2/groups/neurongroup.py", line 775, in before_run
+        self.equations.check_units(self, run_namespace=run_namespace)
+      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 861, in check_units
+        *ex.dims)
+    DimensionMismatchError: Inconsistent units in differential equation defining variable v:
+    Expression 1-v does not have the expected unit Unit(1) / second (unit is 1).
+    
+    Error encountered with object named "neurongroup_1".
+    Object was created here (most recent call only, full details in debug log):
+      File "<ipython-input-11-d086eea0b2de>", line 4, in <module>
+        G = NeuronGroup(1, eqs)
+    
+    An error occurred when preparing an object. DimensionMismatchError: Inconsistent units in differential equation defining variable v:
+    Expression 1-v does not have the expected unit Unit(1) / second (unit is 1).
+    (See above for original error message and traceback.)
+
 
 An error is raised, but why? The reason is that the differential
 equation is now dimensionally inconsistent. The left hand side ``dv/dt``
@@ -224,16 +346,15 @@ Now let's go back to the good equations and actually run the simulation.
     G = NeuronGroup(1, eqs)
     run(100*ms)
 
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.04s). [brian2.stateupdaters.base.method_choice]
-
-
 First off, ignore that ``start_scope()`` at the top of the cell. You'll
 see that in each cell in this tutorial where we run a simulation. All it
 does is make sure that any Brian objects created before the function is
 called aren't included in the next run of the simulation.
+
+Secondly, you'll see that there is an "INFO" message about not
+specifying the numerical integration method. This is harmless and just
+to let you know what method we chose, but we'll fix it in the next cell
+by specifying the method explicitly.
 
 So, what has happened here? Well, the command ``run(100*ms)`` runs the
 simulation for 100 ms. We can see that this has worked by printing the
@@ -243,15 +364,10 @@ value of the variable ``v`` before and after the simulation.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs)
-    print 'Before v =', G.v[0]
+    G = NeuronGroup(1, eqs, method='linear')
+    print('Before v = %s' % G.v[0])
     run(100*ms)
-    print 'After v =', G.v[0]
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    print('After v = %s' % G.v[0])
 
 
 .. parsed-literal::
@@ -268,7 +384,7 @@ that's right.
 
 .. code:: python
 
-    print 'Expected value of v =', 1-exp(-100*ms/tau)
+    print('Expected value of v = %s' % (1-exp(-100*ms/tau)))
 
 
 .. parsed-literal::
@@ -285,31 +401,18 @@ time.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs)
+    G = NeuronGroup(1, eqs, method='linear')
     M = StateMonitor(G, 'v', record=True)
     
     run(30*ms)
     
     plot(M.t/ms, M.v[0])
     xlabel('Time (ms)')
-    ylabel('v')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    ylabel('v');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f629a56d210>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_30_2.png
+.. image:: 1-intro-to-brian-neurons_image_30_0.png
 
 
 This time we only ran the simulation for 30 ms so that we can see the
@@ -320,7 +423,7 @@ just check that analytically by plotting the expected behaviour on top.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs)
+    G = NeuronGroup(1, eqs, method='linear')
     M = StateMonitor(G, 'v', record=0)
     
     run(30*ms)
@@ -329,24 +432,11 @@ just check that analytically by plotting the expected behaviour on top.
     plot(M.t/ms, 1-exp(-M.t/tau), '--r', lw=2, label='Analytic')
     xlabel('Time (ms)')
     ylabel('v')
-    legend(loc='best')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    legend(loc='best');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.legend.Legend at 0x7f629762ee90>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_32_2.png
+.. image:: 1-intro-to-brian-neurons_image_32_0.png
 
 
 As you can see, the blue (Brian) and dashed red (analytic solution)
@@ -372,7 +462,8 @@ the cell below.
     dv/dt = (sin(2*pi*100*Hz*t)-v)/tau : 1
     '''
     
-    G = NeuronGroup(1, eqs, method='euler') # TODO: we shouldn't have to specify euler here
+    # Change to Euler method because exact integrator doesn't work here
+    G = NeuronGroup(1, eqs, method='euler')
     M = StateMonitor(G, 'v', record=0)
     
     G.v = 5 # initial value
@@ -381,19 +472,11 @@ the cell below.
     
     plot(M.t/ms, M.v[0])
     xlabel('Time (ms)')
-    ylabel('v')
+    ylabel('v');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f62973b6dd0>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_34_1.png
+.. image:: 1-intro-to-brian-neurons_image_34_0.png
 
 
 Adding spikes
@@ -411,30 +494,17 @@ differential equations. Now let's start adding spiking behaviour.
     dv/dt = (1-v)/tau : 1
     '''
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0')
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='linear')
     
     M = StateMonitor(G, 'v', record=0)
     run(50*ms)
     plot(M.t/ms, M.v[0])
     xlabel('Time (ms)')
-    ylabel('v')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    ylabel('v');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f62971124d0>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_36_2.png
+.. image:: 1-intro-to-brian-neurons_image_36_0.png
 
 
 We've added two new keywords to the ``NeuronGroup`` declaration:
@@ -452,18 +522,13 @@ registered this event as a spike. Let's have a look at that.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0')
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='linear')
     
     spikemon = SpikeMonitor(G)
     
     run(50*ms)
     
-    print 'Spike times:', spikemon.t[:]
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    print('Spike times: %s' % spikemon.t[:])
 
 
 .. parsed-literal::
@@ -480,7 +545,7 @@ getting it right.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0')
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='linear')
     
     statemon = StateMonitor(G, 'v', record=0)
     spikemon = SpikeMonitor(G)
@@ -491,24 +556,11 @@ getting it right.
     for t in spikemon.t:
         axvline(t/ms, ls='--', c='r', lw=3)
     xlabel('Time (ms)')
-    ylabel('v')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_2', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    ylabel('v');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f6296bff190>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_40_2.png
+.. image:: 1-intro-to-brian-neurons_image_40_0.png
 
 
 Here we've used the ``axvline`` command from ``matplotlib`` to draw a
@@ -535,7 +587,7 @@ how we do that in Brian.
     dv/dt = (1-v)/tau : 1 (unless refractory)
     '''
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', refractory=5*ms)
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', refractory=5*ms, method='linear')
     
     statemon = StateMonitor(G, 'v', record=0)
     spikemon = SpikeMonitor(G)
@@ -546,24 +598,11 @@ how we do that in Brian.
     for t in spikemon.t:
         axvline(t/ms, ls='--', c='r', lw=3)
     xlabel('Time (ms)')
-    ylabel('v')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.03s). [brian2.stateupdaters.base.method_choice]
+    ylabel('v');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f6296bac090>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_43_2.png
+.. image:: 1-intro-to-brian-neurons_image_43_0.png
 
 
 As you can see in this figure, after the first spike, ``v`` stays at 0
@@ -590,7 +629,7 @@ length of the refractory period to make the behaviour clearer.
     dv/dt = (1-v)/tau : 1
     '''
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', refractory=15*ms)
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', refractory=15*ms, method='linear')
     
     statemon = StateMonitor(G, 'v', record=0)
     spikemon = SpikeMonitor(G)
@@ -603,12 +642,7 @@ length of the refractory period to make the behaviour clearer.
     axhline(0.8, ls=':', c='g', lw=3)
     xlabel('Time (ms)')
     ylabel('v')
-    print "Spike times:", spikemon.t[:]
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_2', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    print("Spike times: %s" % spikemon.t[:])
 
 
 .. parsed-literal::
@@ -617,7 +651,7 @@ length of the refractory period to make the behaviour clearer.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_45_2.png
+.. image:: 1-intro-to-brian-neurons_image_45_1.png
 
 
 So what's going on here? The behaviour for the first spike is the same:
@@ -652,7 +686,7 @@ interesting with multiple neurons.
     dv/dt = (2-v)/tau : 1
     '''
     
-    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0')
+    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0', method='linear')
     G.v = 'rand()'
     
     spikemon = SpikeMonitor(G)
@@ -661,24 +695,11 @@ interesting with multiple neurons.
     
     plot(spikemon.t/ms, spikemon.i, '.k')
     xlabel('Time (ms)')
-    ylabel('Neuron index')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    ylabel('Neuron index');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f6294cba590>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_48_2.png
+.. image:: 1-intro-to-brian-neurons_image_48_0.png
 
 
 This shows a few changes. Firstly, we've got a new variable ``N``
@@ -715,7 +736,7 @@ attached to them.
     v0 : 1
     '''
     
-    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0', refractory=5*ms)
+    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0', refractory=5*ms, method='linear')
     M = SpikeMonitor(G)
     
     G.v0 = 'i*v0_max/(N-1)'
@@ -730,24 +751,11 @@ attached to them.
     subplot(122)
     plot(G.v0, M.count/duration)
     xlabel('v0')
-    ylabel('Firing rate (sp/s)')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_3', using method 'linear' (took 0.03s). [brian2.stateupdaters.base.method_choice]
+    ylabel('Firing rate (sp/s)');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f6293ffdf10>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_51_2.png
+.. image:: 1-intro-to-brian-neurons_image_51_0.png
 
 
 The line ``v0 : 1`` declares a new per-neuron parameter ``v0`` with
@@ -798,7 +806,7 @@ differential equations for more details).
     v0 : 1
     '''
     
-    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0', refractory=5*ms)
+    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0', refractory=5*ms, method='euler')
     M = SpikeMonitor(G)
     
     G.v0 = 'i*v0_max/(N-1)'
@@ -813,24 +821,11 @@ differential equations for more details).
     subplot(122)
     plot(G.v0, M.count/duration)
     xlabel('v0')
-    ylabel('Firing rate (sp/s)')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'euler' (took 0.02s, trying other methods took 0.00s). [brian2.stateupdaters.base.method_choice]
+    ylabel('Firing rate (sp/s)');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f6293eb2750>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_54_2.png
+.. image:: 1-intro-to-brian-neurons_image_54_0.png
 
 
 That's the same figure as in the previous section but with some noise
@@ -876,7 +871,7 @@ Synapses.
     vt += delta_vt0
     '''
     
-    G = NeuronGroup(N, eqs, threshold='v>vt', reset=reset, refractory=5*ms)
+    G = NeuronGroup(N, eqs, threshold='v>vt', reset=reset, refractory=5*ms, method='euler')
     spikemon = SpikeMonitor(G)
     
     G.v = 'rand()*(vt0-vr)+vr'
@@ -886,22 +881,9 @@ Synapses.
     
     _ = hist(spikemon.t/ms, 100, histtype='stepfilled', facecolor='k', weights=ones(len(spikemon))/(N*defaultclock.dt))
     xlabel('Time (ms)')
-    ylabel('Instantaneous firing rate (sp/s)')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_3', using method 'euler' (took 0.02s, trying other methods took 0.00s). [brian2.stateupdaters.base.method_choice]
+    ylabel('Instantaneous firing rate (sp/s)');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f6293545d10>
-
-
-
-
-.. image:: 1-intro-to-brian-neurons_image_57_2.png
+.. image:: 1-intro-to-brian-neurons_image_57_0.png
 

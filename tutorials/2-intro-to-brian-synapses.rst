@@ -3,13 +3,20 @@ Introduction to Brian part 2: Synapses
 ======================================
 
 
-    .. note::
-       This tutorial is written as an interactive notebook that should be run
-       on your own computer. See the :doc:`tutorial overview page <index>` for
-       more details.
+.. |launchbinder| image:: http://mybinder.org/badge.svg
+.. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/2-intro-to-brian-synapses.ipynb
 
-       Download link for this tutorial: :download:`2-intro-to-brian-synapses.ipynb`.
-    
+.. note::
+   This tutorial is a static non-editable version. You can launch an
+   interactive, editable version without installing any local files
+   using the Binder service (although note that at some times this
+   may be slow or fail to open): |launchbinder|_
+
+   Alternatively, you can download a copy of the notebook file
+   to use locally: :download:`2-intro-to-brian-synapses.ipynb`
+
+   See the :doc:`tutorial overview page <index>` for more details.
+
 
 If you haven't yet read part 1: Neurons, go read that now.
 
@@ -37,7 +44,7 @@ synapse that causes an instantaneous change in a variable after a spike.
     I : 1
     tau : second
     '''
-    G = NeuronGroup(2, eqs, threshold='v>1', reset='v = 0')
+    G = NeuronGroup(2, eqs, threshold='v>1', reset='v = 0', method='linear')
     G.I = [2, 0]
     G.tau = [10, 100]*ms
     
@@ -53,24 +60,11 @@ synapse that causes an instantaneous change in a variable after a spike.
     plot(M.t/ms, M.v[1], '-g', lw=2, label='Neuron 1')
     xlabel('Time (ms)')
     ylabel('v')
-    legend(loc='best')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.04s). [brian2.stateupdaters.base.method_choice]
+    legend(loc='best');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.legend.Legend at 0x7f6b5a75e2d0>
-
-
-
-
-.. image:: 2-intro-to-brian-synapses_image_5_2.png
+.. image:: 2-intro-to-brian-synapses_image_5_0.png
 
 
 There are a few things going on here. First of all, let's recap what is
@@ -115,7 +109,7 @@ different synapses. We do that by introducing synapse equations.
     I : 1
     tau : second
     '''
-    G = NeuronGroup(3, eqs, threshold='v>1', reset='v = 0')
+    G = NeuronGroup(3, eqs, threshold='v>1', reset='v = 0', method='linear')
     G.I = [2, 0, 0]
     G.tau = [10, 100, 100]*ms
     
@@ -133,24 +127,11 @@ different synapses. We do that by introducing synapse equations.
     plot(M.t/ms, M.v[2], '-r', lw=2, label='Neuron 1')
     xlabel('Time (ms)')
     ylabel('v')
-    legend(loc='best')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    legend(loc='best');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.legend.Legend at 0x7f6b59ff73d0>
-
-
-
-
-.. image:: 2-intro-to-brian-synapses_image_8_2.png
+.. image:: 2-intro-to-brian-synapses_image_8_0.png
 
 
 This example behaves very similarly to the previous example, but now
@@ -182,7 +163,7 @@ act with a certain delay.
     I : 1
     tau : second
     '''
-    G = NeuronGroup(3, eqs, threshold='v>1', reset='v = 0')
+    G = NeuronGroup(3, eqs, threshold='v>1', reset='v = 0', method='linear')
     G.I = [2, 0, 0]
     G.tau = [10, 100, 100]*ms
     
@@ -200,24 +181,11 @@ act with a certain delay.
     plot(M.t/ms, M.v[2], '-r', lw=2, label='Neuron 1')
     xlabel('Time (ms)')
     ylabel('v')
-    legend(loc='best')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.02s). [brian2.stateupdaters.base.method_choice]
+    legend(loc='best');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.legend.Legend at 0x7f6b5949f8d0>
-
-
-
-
-.. image:: 2-intro-to-brian-synapses_image_11_2.png
+.. image:: 2-intro-to-brian-synapses_image_11_0.png
 
 
 As you can see, that's as simple as adding a line ``S.delay = 'j*2*ms'``
@@ -400,19 +368,11 @@ visualise the weight of a synapse by the size of the marker.
     
     scatter(G.x[S.i]/um, G.x[S.j]/um, S.w*20)
     xlabel('Source neuron position (um)')
-    ylabel('Target neuron position (um)')
+    ylabel('Target neuron position (um)');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f6b58da4a90>
-
-
-
-
-.. image:: 2-intro-to-brian-synapses_image_27_1.png
+.. image:: 2-intro-to-brian-synapses_image_27_0.png
 
 
 Now try changing that function and seeing how the plot changes.
@@ -453,19 +413,11 @@ This function looks like this:
     xlabel(r'$\Delta t$ (ms)')
     ylabel('W')
     ylim(-A_post, A_post)
-    axhline(0, ls='-', c='k')
+    axhline(0, ls='-', c='k');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.lines.Line2D at 0x7f6b58b43c50>
-
-
-
-
-.. image:: 2-intro-to-brian-synapses_image_29_1.png
+.. image:: 2-intro-to-brian-synapses_image_29_0.png
 
 
 Simulating it directly using this equation though would be very
@@ -590,7 +542,7 @@ arrives some time before a postsynaptic spike.
                  on_post='''
                  apost += Apost
                  w = clip(w+apre, 0, wmax)
-                 ''')
+                 ''', method='linear')
     S.connect(i=0, j=1)
     M = StateMonitor(S, ['w', 'apre', 'apost'], record=True)
     
@@ -604,25 +556,11 @@ arrives some time before a postsynaptic spike.
     subplot(212)
     plot(M.t/ms, M.w[0], label='w')
     legend(loc='best')
-    xlabel('Time (ms)')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_2', using method 'linear' (took 0.00s). [brian2.stateupdaters.base.method_choice]
-    INFO       No numerical integration method specified for group 'synapses', using method 'linear' (took 0.14s). [brian2.stateupdaters.base.method_choice]
+    xlabel('Time (ms)');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.text.Text at 0x7f6b58775990>
-
-
-
-
-.. image:: 2-intro-to-brian-synapses_image_33_2.png
+.. image:: 2-intro-to-brian-synapses_image_33_0.png
 
 
 A couple of things to note here. First of all, we've used a trick to
@@ -678,25 +616,11 @@ original one.
     xlabel(r'$\Delta t$ (ms)')
     ylabel(r'$\Delta w$')
     ylim(-Apost, Apost)
-    axhline(0, ls='-', c='k')
-
-
-.. parsed-literal::
-
-    INFO       No numerical integration method specified for group 'neurongroup_1', using method 'linear' (took 0.00s). [brian2.stateupdaters.base.method_choice]
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.00s). [brian2.stateupdaters.base.method_choice]
+    axhline(0, ls='-', c='k');
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.lines.Line2D at 0x7f6b58fab110>
-
-
-
-
-.. image:: 2-intro-to-brian-synapses_image_35_2.png
+.. image:: 2-intro-to-brian-synapses_image_35_0.png
 
 
 Can you see how this works?
