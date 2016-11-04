@@ -397,7 +397,7 @@ spike times. A commonly used function :math:`W` is:
 
    W(\Delta t) = \begin{cases}
    A_{pre} e^{-\Delta t/\tau_{pre}} & \Delta t>0 \\
-   A_{post}- e^{\Delta t/\tau_{pre}} & \Delta t<0
+   A_{post}- e^{\Delta t/\tau_{post}} & \Delta t<0
    \end{cases}
 
 This function looks like this:

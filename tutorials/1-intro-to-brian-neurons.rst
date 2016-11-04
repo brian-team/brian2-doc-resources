@@ -128,19 +128,19 @@ happens?
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in __add__(self, other)
-       1408         return self._binary_operation(other, operator.add,
-       1409                                       fail_for_mismatch=True,
-    -> 1410                                       operator_str='+')
-       1411 
-       1412     def __radd__(self, other):
+       1412         return self._binary_operation(other, operator.add,
+       1413                                       fail_for_mismatch=True,
+    -> 1414                                       operator_str='+')
+       1415 
+       1416     def __radd__(self, other):
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in _binary_operation(self, other, operation, dim_operation, fail_for_mismatch, operator_str, inplace)
-       1348                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
-       1349                                                            value1=self,
-    -> 1350                                                            value2=other)
-       1351 
-       1352         if other_dim is None:
+       1352                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
+       1353                                                            value1=self,
+    -> 1354                                                            value2=other)
+       1355 
+       1356         if other_dim is None:
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in fail_for_dimension_mismatch(obj1, obj2, error_message, **error_quantities)
@@ -237,11 +237,11 @@ equation:
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
-       2386                         raise DimensionMismatchError(error_message,
-       2387                                                      newkeyset[k])
-    -> 2388             result = f(*args, **kwds)
-       2389             if 'result' in au:
-       2390                 if not have_same_dimensions(result, au['result']):
+       2426                         raise DimensionMismatchError(error_message,
+       2427                                                      newkeyset[k])
+    -> 2428             result = f(*args, **kwds)
+       2429             if 'result' in au:
+       2430                 if au['result'] == bool:
 
 
     /home/marcel/programming/brian2/brian2/core/magic.pyc in run(duration, report, report_period, namespace, profile, level)
@@ -269,19 +269,19 @@ equation:
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
-       2386                         raise DimensionMismatchError(error_message,
-       2387                                                      newkeyset[k])
-    -> 2388             result = f(*args, **kwds)
-       2389             if 'result' in au:
-       2390                 if not have_same_dimensions(result, au['result']):
+       2426                         raise DimensionMismatchError(error_message,
+       2427                                                      newkeyset[k])
+    -> 2428             result = f(*args, **kwds)
+       2429             if 'result' in au:
+       2430                 if au['result'] == bool:
 
 
     /home/marcel/programming/brian2/brian2/core/network.pyc in run(self, duration, report, report_period, namespace, profile, level)
-        786             namespace = get_local_namespace(level=level+3)
-        787 
-    --> 788         self.before_run(namespace)
-        789 
-        790         if len(self.objects)==0:
+        787             namespace = get_local_namespace(level=level+3)
+        788 
+    --> 789         self.before_run(namespace)
+        790 
+        791         if len(self.objects)==0:
 
 
     /home/marcel/programming/brian2/brian2/core/base.pyc in device_override_decorated_function(*args, **kwds)
@@ -293,20 +293,20 @@ equation:
 
 
     /home/marcel/programming/brian2/brian2/core/network.pyc in before_run(self, run_namespace)
-        686                     obj.before_run(run_namespace)
-        687                 except Exception as ex:
-    --> 688                     raise brian_object_exception("An error occurred when preparing an object.", obj, ex)
-        689 
-        690         # Check that no object has been run as part of another network before
+        687                     obj.before_run(run_namespace)
+        688                 except Exception as ex:
+    --> 689                     raise brian_object_exception("An error occurred when preparing an object.", obj, ex)
+        690 
+        691         # Check that no object has been run as part of another network before
 
 
     BrianObjectException: Original error and traceback:
     Traceback (most recent call last):
-      File "/home/marcel/programming/brian2/brian2/core/network.py", line 686, in before_run
+      File "/home/marcel/programming/brian2/brian2/core/network.py", line 687, in before_run
         obj.before_run(run_namespace)
-      File "/home/marcel/programming/brian2/brian2/groups/neurongroup.py", line 775, in before_run
+      File "/home/marcel/programming/brian2/brian2/groups/neurongroup.py", line 778, in before_run
         self.equations.check_units(self, run_namespace=run_namespace)
-      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 861, in check_units
+      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 867, in check_units
         *ex.dims)
     DimensionMismatchError: Inconsistent units in differential equation defining variable v:
     Expression 1-v does not have the expected unit Unit(1) / second (unit is 1).
@@ -345,6 +345,17 @@ Now let's go back to the good equations and actually run the simulation.
     
     G = NeuronGroup(1, eqs)
     run(100*ms)
+
+
+.. parsed-literal::
+
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.08s). [brian2.stateupdaters.base.method_choice]
+
+
+.. parsed-literal::
+
+    creating /tmp/scipy-marcel-0rY5rm/python27_intermediate/compiler_9cd5ca61805d4ede467c148e9bbe069f
+
 
 First off, ignore that ``start_scope()`` at the top of the cell. You'll
 see that in each cell in this tutorial where we run a simulation. All it
