@@ -119,9 +119,9 @@ happens?
 ::
 
 
-    
+    ---------------------------------------------------------------------------
 
-    DimensionMismatchErrorTraceback (most recent call last)
+    DimensionMismatchError                    Traceback (most recent call last)
 
     <ipython-input-8-ad1fc5691a4b> in <module>()
     ----> 1 5*amp+10*volt
@@ -226,9 +226,9 @@ equation:
 ::
 
 
-    
+    ---------------------------------------------------------------------------
 
-    BrianObjectExceptionTraceback (most recent call last)
+    BrianObjectException                      Traceback (most recent call last)
 
     <ipython-input-11-d086eea0b2de> in <module>()
           3 '''
@@ -349,12 +349,7 @@ Now let's go back to the good equations and actually run the simulation.
 
 .. parsed-literal::
 
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.08s). [brian2.stateupdaters.base.method_choice]
-
-
-.. parsed-literal::
-
-    creating /tmp/scipy-marcel-0rY5rm/python27_intermediate/compiler_9cd5ca61805d4ede467c148e9bbe069f
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.06s). [brian2.stateupdaters.base.method_choice]
 
 
 First off, ignore that ``start_scope()`` at the top of the cell. You'll

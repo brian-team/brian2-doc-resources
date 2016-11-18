@@ -305,7 +305,9 @@ You can also use the generator syntax to create connections like this
 more efficiently. In small examples like this, it doesn't matter, but
 for large numbers of neurons it can be much more efficient to specify
 directly which neurons should be connected than to specify just a
-condition.
+condition. Note that the following example uses ``skip_if_invalid`` to
+avoid errors at the boundaries (e.g. do not try to connect the neuron
+with index 1 to a neuron with index -2).
 
 .. code:: python
 
@@ -315,7 +317,7 @@ condition.
     G = NeuronGroup(N, 'v:1')
     
     S = Synapses(G, G)
-    S.connect(j='k for k in range(clip(i-3, 0, N_post), clip(i+4, 0, N_post)) if i!=k')
+    S.connect(j='k for k in range(i-3, i+4) if i!=k', skip_if_invalid=True)
     visualise_connectivity(S)
 
 
