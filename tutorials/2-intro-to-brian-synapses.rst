@@ -56,11 +56,11 @@ synapse that causes an instantaneous change in a variable after a spike.
     
     run(100*ms)
     
-    plot(M.t/ms, M.v[0], '-b', label='Neuron 0')
-    plot(M.t/ms, M.v[1], '-g', lw=2, label='Neuron 1')
+    plot(M.t/ms, M.v[0], label='Neuron 0')
+    plot(M.t/ms, M.v[1], label='Neuron 1')
     xlabel('Time (ms)')
     ylabel('v')
-    legend(loc='best');
+    legend();
 
 
 
@@ -122,12 +122,12 @@ different synapses. We do that by introducing synapse equations.
     
     run(50*ms)
     
-    plot(M.t/ms, M.v[0], '-b', label='Neuron 0')
-    plot(M.t/ms, M.v[1], '-g', lw=2, label='Neuron 1')
-    plot(M.t/ms, M.v[2], '-r', lw=2, label='Neuron 1')
+    plot(M.t/ms, M.v[0], label='Neuron 0')
+    plot(M.t/ms, M.v[1], label='Neuron 1')
+    plot(M.t/ms, M.v[2], label='Neuron 2')
     xlabel('Time (ms)')
     ylabel('v')
-    legend(loc='best');
+    legend();
 
 
 
@@ -176,12 +176,12 @@ act with a certain delay.
     
     run(50*ms)
     
-    plot(M.t/ms, M.v[0], '-b', label='Neuron 0')
-    plot(M.t/ms, M.v[1], '-g', lw=2, label='Neuron 1')
-    plot(M.t/ms, M.v[2], '-r', lw=2, label='Neuron 1')
+    plot(M.t/ms, M.v[0], label='Neuron 0')
+    plot(M.t/ms, M.v[1], label='Neuron 1')
+    plot(M.t/ms, M.v[2], label='Neuron 2')
     xlabel('Time (ms)')
     ylabel('v')
-    legend(loc='best');
+    legend();
 
 
 
@@ -325,8 +325,10 @@ with index 1 to a neuron with index -2).
 .. image:: 2-intro-to-brian-synapses_image_23_0.png
 
 
-If each source neuron is connected to precisely one target neuron, there
-is a special syntax that is extremely efficient. For example, 1-to-1
+If each source neuron is connected to precisely one target neuron (which
+would be normally used with two separate groups of the same size, not
+with identical source and target groups as in this example), there is a
+special syntax that is extremely efficient. For example, 1-to-1
 connectivity looks like this:
 
 .. code:: python
@@ -368,7 +370,7 @@ visualise the weight of a synapse by the size of the marker.
     # Weight varies with distance
     S.w = 'exp(-(x_pre-x_post)**2/(2*width**2))'
     
-    scatter(G.x[S.i]/um, G.x[S.j]/um, S.w*20)
+    scatter(S.x_pre/um, S.x_post/um, S.w*20)
     xlabel('Source neuron position (um)')
     ylabel('Target neuron position (um)');
 
@@ -399,7 +401,7 @@ spike times. A commonly used function :math:`W` is:
 
    W(\Delta t) = \begin{cases}
    A_{pre} e^{-\Delta t/\tau_{pre}} & \Delta t>0 \\
-   A_{post}- e^{\Delta t/\tau_{post}} & \Delta t<0
+   A_{post} e^{\Delta t/\tau_{post}} & \Delta t<0
    \end{cases}
 
 This function looks like this:
@@ -410,11 +412,10 @@ This function looks like this:
     A_pre = 0.01
     A_post = -A_pre*1.05
     delta_t = linspace(-50, 50, 100)*ms
-    W = where(delta_t<0, A_pre*exp(delta_t/tau_pre), A_post*exp(-delta_t/tau_post))
+    W = where(delta_t>0, A_pre*exp(-delta_t/tau_pre), A_post*exp(delta_t/tau_post))
     plot(delta_t/ms, W)
     xlabel(r'$\Delta t$ (ms)')
     ylabel('W')
-    ylim(-A_post, A_post)
     axhline(0, ls='-', c='k');
 
 
@@ -554,7 +555,7 @@ arrives some time before a postsynaptic spike.
     subplot(211)
     plot(M.t/ms, M.apre[0], label='apre')
     plot(M.t/ms, M.apost[0], label='apost')
-    legend(loc='best')
+    legend()
     subplot(212)
     plot(M.t/ms, M.w[0], label='w')
     legend(loc='best')
@@ -617,7 +618,6 @@ original one.
     plot((H.tspike-G.tspike)/ms, S.w)
     xlabel(r'$\Delta t$ (ms)')
     ylabel(r'$\Delta w$')
-    ylim(-Apost, Apost)
     axhline(0, ls='-', c='k');
 
 

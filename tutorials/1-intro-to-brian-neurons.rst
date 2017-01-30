@@ -19,18 +19,25 @@ Introduction to Brian part 1: Neurons
 
 
 All Brian scripts start with the following. If you're trying this
-notebook out in IPython, you should start by running this cell.
+notebook out in the Jupyter notebook, you should start by running this
+cell.
 
 .. code:: python
 
     from brian2 import *
 
 Later we'll do some plotting in the notebook, so we activate inline
-plotting in the IPython notebook by doing this:
+plotting in the notebook by doing this:
 
 .. code:: python
 
     %matplotlib inline
+
+If you are not using the Jupyter notebook to run this example (e.g. you
+are using a standard Python terminal, or you copy&paste these example
+into an editor and run them as a script), then plots will not
+automatically be displayed. In this case, call the ``show()`` command
+explicitly after the plotting commands.
 
 Units system
 ------------
@@ -119,36 +126,36 @@ happens?
 ::
 
 
-    ---------------------------------------------------------------------------
+    
 
-    DimensionMismatchError                    Traceback (most recent call last)
+    DimensionMismatchErrorTraceback (most recent call last)
 
     <ipython-input-8-ad1fc5691a4b> in <module>()
     ----> 1 5*amp+10*volt
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in __add__(self, other)
-       1412         return self._binary_operation(other, operator.add,
-       1413                                       fail_for_mismatch=True,
-    -> 1414                                       operator_str='+')
-       1415 
-       1416     def __radd__(self, other):
+       1415         return self._binary_operation(other, operator.add,
+       1416                                       fail_for_mismatch=True,
+    -> 1417                                       operator_str='+')
+       1418 
+       1419     def __radd__(self, other):
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in _binary_operation(self, other, operation, dim_operation, fail_for_mismatch, operator_str, inplace)
-       1352                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
-       1353                                                            value1=self,
-    -> 1354                                                            value2=other)
-       1355 
-       1356         if other_dim is None:
+       1355                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
+       1356                                                            value1=self,
+    -> 1357                                                            value2=other)
+       1358 
+       1359         if other_dim is None:
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in fail_for_dimension_mismatch(obj1, obj2, error_message, **error_quantities)
-        183             raise DimensionMismatchError(error_message, dim1)
-        184         else:
-    --> 185             raise DimensionMismatchError(error_message, dim1, dim2)
-        186     else:
-        187         return dim1, dim2
+        182             raise DimensionMismatchError(error_message, dim1)
+        183         else:
+    --> 184             raise DimensionMismatchError(error_message, dim1, dim2)
+        185     else:
+        186         return dim1, dim2
 
 
     DimensionMismatchError: Cannot calculate 5. A + 10. V, units do not match (units are amp and volt).
@@ -198,7 +205,9 @@ In Python, the notation ``'''`` is used to begin and end a multi-line
 string. So the equations are just a string with one line per equation.
 The equations are formatted with standard mathematical notation, with
 one addition. At the end of a line you write ``: unit`` where ``unit``
-is the SI unit of that variable.
+is the SI unit of that variable. Note that this is not the unit of the
+two sides of the equation (which would be ``1/second``), but the unit of
+the *variable* defined by the equation, i.e. in this case :math:`v`.
 
 Now let's use this definition to create a neuron.
 
@@ -226,9 +235,9 @@ equation:
 ::
 
 
-    ---------------------------------------------------------------------------
+    
 
-    BrianObjectException                      Traceback (most recent call last)
+    BrianObjectExceptionTraceback (most recent call last)
 
     <ipython-input-11-d086eea0b2de> in <module>()
           3 '''
@@ -237,11 +246,11 @@ equation:
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
-       2426                         raise DimensionMismatchError(error_message,
-       2427                                                      newkeyset[k])
-    -> 2428             result = f(*args, **kwds)
-       2429             if 'result' in au:
-       2430                 if au['result'] == bool:
+       2410                         raise DimensionMismatchError(error_message,
+       2411                                                      newkeyset[k])
+    -> 2412             result = f(*args, **kwds)
+       2413             if 'result' in au:
+       2414                 if au['result'] == bool:
 
 
     /home/marcel/programming/brian2/brian2/core/magic.pyc in run(duration, report, report_period, namespace, profile, level)
@@ -269,11 +278,11 @@ equation:
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
-       2426                         raise DimensionMismatchError(error_message,
-       2427                                                      newkeyset[k])
-    -> 2428             result = f(*args, **kwds)
-       2429             if 'result' in au:
-       2430                 if au['result'] == bool:
+       2410                         raise DimensionMismatchError(error_message,
+       2411                                                      newkeyset[k])
+    -> 2412             result = f(*args, **kwds)
+       2413             if 'result' in au:
+       2414                 if au['result'] == bool:
 
 
     /home/marcel/programming/brian2/brian2/core/network.pyc in run(self, duration, report, report_period, namespace, profile, level)
@@ -309,7 +318,7 @@ equation:
       File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 867, in check_units
         *ex.dims)
     DimensionMismatchError: Inconsistent units in differential equation defining variable v:
-    Expression 1-v does not have the expected unit Unit(1) / second (unit is 1).
+    Expression 1-v does not have the expected unit hertz (unit is 1).
     
     Error encountered with object named "neurongroup_1".
     Object was created here (most recent call only, full details in debug log):
@@ -317,7 +326,7 @@ equation:
         G = NeuronGroup(1, eqs)
     
     An error occurred when preparing an object. DimensionMismatchError: Inconsistent units in differential equation defining variable v:
-    Expression 1-v does not have the expected unit Unit(1) / second (unit is 1).
+    Expression 1-v does not have the expected unit hertz (unit is 1).
     (See above for original error message and traceback.)
 
 
@@ -349,7 +358,7 @@ Now let's go back to the good equations and actually run the simulation.
 
 .. parsed-literal::
 
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.06s). [brian2.stateupdaters.base.method_choice]
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.07s). [brian2.stateupdaters.base.method_choice]
 
 
 First off, ignore that ``start_scope()`` at the top of the cell. You'll
@@ -418,7 +427,7 @@ time.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_30_0.png
+.. image:: 1-intro-to-brian-neurons_image_31_0.png
 
 
 This time we only ran the simulation for 30 ms so that we can see the
@@ -434,15 +443,15 @@ just check that analytically by plotting the expected behaviour on top.
     
     run(30*ms)
     
-    plot(M.t/ms, M.v[0], '-b', lw=2, label='Brian')
-    plot(M.t/ms, 1-exp(-M.t/tau), '--r', lw=2, label='Analytic')
+    plot(M.t/ms, M.v[0], 'b', label='Brian')
+    plot(M.t/ms, 1-exp(-M.t/tau), 'r--',label='Analytic')
     xlabel('Time (ms)')
     ylabel('v')
-    legend(loc='best');
+    legend();
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_32_0.png
+.. image:: 1-intro-to-brian-neurons_image_33_0.png
 
 
 As you can see, the blue (Brian) and dashed red (analytic solution)
@@ -482,7 +491,7 @@ the cell below.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_34_0.png
+.. image:: 1-intro-to-brian-neurons_image_35_0.png
 
 
 Adding spikes
@@ -510,13 +519,13 @@ differential equations. Now let's start adding spiking behaviour.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_36_0.png
+.. image:: 1-intro-to-brian-neurons_image_37_0.png
 
 
 We've added two new keywords to the ``NeuronGroup`` declaration:
 ``threshold='v>0.8'`` and ``reset='v = 0'``. What this means is that
-when ``v>1`` we fire a spike, and immediately reset ``v = 0`` after the
-spike. We can put any expression and series of statements as these
+when ``v>0.8`` we fire a spike, and immediately reset ``v = 0`` after
+the spike. We can put any expression and series of statements as these
 strings.
 
 As you can see, at the beginning the behaviour is the same as before
@@ -566,7 +575,7 @@ getting it right.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_40_0.png
+.. image:: 1-intro-to-brian-neurons_image_41_0.png
 
 
 Here we've used the ``axvline`` command from ``matplotlib`` to draw a
@@ -608,7 +617,7 @@ how we do that in Brian.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_43_0.png
+.. image:: 1-intro-to-brian-neurons_image_44_0.png
 
 
 As you can see in this figure, after the first spike, ``v`` stays at 0
@@ -657,7 +666,7 @@ length of the refractory period to make the behaviour clearer.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_45_1.png
+.. image:: 1-intro-to-brian-neurons_image_46_1.png
 
 
 So what's going on here? The behaviour for the first spike is the same:
@@ -705,7 +714,7 @@ interesting with multiple neurons.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_48_0.png
+.. image:: 1-intro-to-brian-neurons_image_49_0.png
 
 
 This shows a few changes. Firstly, we've got a new variable ``N``
@@ -761,7 +770,7 @@ attached to them.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_51_0.png
+.. image:: 1-intro-to-brian-neurons_image_52_0.png
 
 
 The line ``v0 : 1`` declares a new per-neuron parameter ``v0`` with
@@ -772,11 +781,11 @@ each neuron varying from 0 up to ``v0_max``. The symbol ``i`` when it
 appears in strings like this refers to the neuron index.
 
 So in this example, we're driving the neuron towards the value ``v0``
-exponentially, but we fire spikes when ``v`` crosses ``v>1`` it fires a
-spike and resets. The effect is that the rate at which it fires spikes
-will be related to the value of ``v0``. For ``v0<1`` it will never fire
-a spike, and as ``v0`` gets larger it will fire spikes at a higher rate.
-The right hand plot shows the firing rate as a function of the value of
+exponentially, but when ``v`` crosses ``v>1``, it fires a spike and
+resets. The effect is that the rate at which it fires spikes will be
+related to the value of ``v0``. For ``v0<1`` it will never fire a spike,
+and as ``v0`` gets larger it will fire spikes at a higher rate. The
+right hand plot shows the firing rate as a function of the value of
 ``v0``. This is the I-f curve of this neuron model.
 
 Note that in the plot we've used the ``count`` variable of the
@@ -795,7 +804,12 @@ thinking of it as just a Gaussian random variable with mean 0 and
 standard deviation 1. We do have to take into account the way stochastic
 differentials scale with time, which is why we multiply it by
 ``tau**-0.5`` in the equations below (see a textbook on stochastic
-differential equations for more details).
+differential equations for more details). Note that we also changed the
+``method`` keyword argument to use ``'euler'`` (which stands for the
+`Euler-Maruyama
+method <https://en.wikipedia.org/wiki/Euler%E2%80%93Maruyama_method>`__);
+the ``'linear'`` method that we used earlier is not applicable to
+stochastic differential equations.
 
 .. code:: python
 
@@ -831,7 +845,7 @@ differential equations for more details).
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_54_0.png
+.. image:: 1-intro-to-brian-neurons_image_55_0.png
 
 
 That's the same figure as in the previous section but with some noise
@@ -891,5 +905,5 @@ Synapses.
 
 
 
-.. image:: 1-intro-to-brian-neurons_image_57_0.png
+.. image:: 1-intro-to-brian-neurons_image_58_0.png
 
