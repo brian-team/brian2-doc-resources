@@ -23,7 +23,7 @@ If you haven't yet read part 1: Neurons, go read that now.
 As before we start by importing the Brian package and setting up
 matplotlib for IPython:
 
-.. code:: python
+.. code:: ipython2
 
     from brian2 import *
     %matplotlib inline
@@ -35,7 +35,7 @@ Once you have some neurons, the next step is to connect them up via
 synapses. We'll start out with doing the simplest possible type of
 synapse that causes an instantaneous change in a variable after a spike.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -100,7 +100,7 @@ In the previous section, we hard coded the weight of the synapse to be
 the value 0.2, but often we would to allow this to be different for
 different synapses. We do that by introducing synapse equations.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -154,7 +154,7 @@ Introducing a delay
 So far, the synapses have been instantaneous, but we can also make them
 act with a certain delay.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -199,7 +199,7 @@ So far, we specified the synaptic connectivity explicitly, but for
 larger networks this isn't usually possible. For that, we usually want
 to specify some condition.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -215,7 +215,7 @@ connect all pairs of neurons ``i`` and ``j`` with probability 0.2 as
 long as the condition ``i!=j`` holds. So, how can we see that
 connectivity? Here's a little function that will let us visualise it.
 
-.. code:: python
+.. code:: ipython2
 
     def visualise_connectivity(S):
         Ns = len(S.source)
@@ -254,7 +254,7 @@ value the source neuron index, and y value the target neuron index.
 Let's see how these figures change as we change the probability of a
 connection:
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -283,7 +283,7 @@ connection:
 And let's see what another connectivity condition looks like. This one
 will only connect neighbouring neurons.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -309,7 +309,7 @@ condition. Note that the following example uses ``skip_if_invalid`` to
 avoid errors at the boundaries (e.g. do not try to connect the neuron
 with index 1 to a neuron with index -2).
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -331,7 +331,7 @@ with identical source and target groups as in this example), there is a
 special syntax that is extremely efficient. For example, 1-to-1
 connectivity looks like this:
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -352,7 +352,7 @@ string. Let's see an example where we assign each neuron a spatial
 location and have a distance-dependent connectivity function. We
 visualise the weight of a synapse by the size of the marker.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -406,7 +406,7 @@ spike times. A commonly used function :math:`W` is:
 
 This function looks like this:
 
-.. code:: python
+.. code:: ipython2
 
     tau_pre = tau_post = 20*ms
     A_pre = 0.01
@@ -467,7 +467,7 @@ Try drawing a picture of it.
 Now that we have a formulation that relies only on differential
 equations and spike events, we can turn that into Brian code.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -520,7 +520,7 @@ modify ``v`` in this case, only the synaptic variables.
 Now let's see how all the variables behave when a presynaptic spike
 arrives some time before a postsynaptic spike.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -579,7 +579,7 @@ Try changing the times of the spikes to see what happens.
 Finally, let's verify that this formulation is equivalent to the
 original one.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     

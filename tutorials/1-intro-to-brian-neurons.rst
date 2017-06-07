@@ -22,14 +22,14 @@ All Brian scripts start with the following. If you're trying this
 notebook out in the Jupyter notebook, you should start by running this
 cell.
 
-.. code:: python
+.. code:: ipython2
 
     from brian2 import *
 
 Later we'll do some plotting in the notebook, so we activate inline
 plotting in the notebook by doing this:
 
-.. code:: python
+.. code:: ipython2
 
     %matplotlib inline
 
@@ -44,7 +44,7 @@ Units system
 
 Brian has a system for using quantities with physical dimensions:
 
-.. code:: python
+.. code:: ipython2
 
     20*volt
 
@@ -61,7 +61,7 @@ All of the basic SI units can be used (volt, amp, etc.) along with all
 the standard prefixes (m=milli, p=pico, etc.), as well as a few special
 abbreviations like ``mV`` for millivolt, ``pF`` for picofarad, etc.
 
-.. code:: python
+.. code:: ipython2
 
     1000*amp
 
@@ -74,7 +74,7 @@ abbreviations like ``mV`` for millivolt, ``pF`` for picofarad, etc.
 
 
 
-.. code:: python
+.. code:: ipython2
 
     1e6*volt
 
@@ -87,7 +87,7 @@ abbreviations like ``mV`` for millivolt, ``pF`` for picofarad, etc.
 
 
 
-.. code:: python
+.. code:: ipython2
 
     1000*namp
 
@@ -102,7 +102,7 @@ abbreviations like ``mV`` for millivolt, ``pF`` for picofarad, etc.
 
 Also note that combinations of units with work as expected:
 
-.. code:: python
+.. code:: ipython2
 
     10*nA*5*Mohm
 
@@ -118,7 +118,7 @@ Also note that combinations of units with work as expected:
 And if you try to do something wrong like adding amps and volts, what
 happens?
 
-.. code:: python
+.. code:: ipython2
 
     5*amp+10*volt
 
@@ -135,27 +135,27 @@ happens?
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in __add__(self, other)
-       1415         return self._binary_operation(other, operator.add,
-       1416                                       fail_for_mismatch=True,
-    -> 1417                                       operator_str='+')
-       1418 
-       1419     def __radd__(self, other):
+       1422         return self._binary_operation(other, operator.add,
+       1423                                       fail_for_mismatch=True,
+    -> 1424                                       operator_str='+')
+       1425 
+       1426     def __radd__(self, other):
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in _binary_operation(self, other, operation, dim_operation, fail_for_mismatch, operator_str, inplace)
-       1355                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
-       1356                                                            value1=self,
-    -> 1357                                                            value2=other)
-       1358 
-       1359         if other_dim is None:
+       1362                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
+       1363                                                            value1=self,
+    -> 1364                                                            value2=other)
+       1365 
+       1366         if other_dim is None:
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in fail_for_dimension_mismatch(obj1, obj2, error_message, **error_quantities)
-        182             raise DimensionMismatchError(error_message, dim1)
-        183         else:
-    --> 184             raise DimensionMismatchError(error_message, dim1, dim2)
-        185     else:
-        186         return dim1, dim2
+        184             raise DimensionMismatchError(error_message, dim1)
+        185         else:
+    --> 186             raise DimensionMismatchError(error_message, dim1, dim2)
+        187     else:
+        188         return dim1, dim2
 
 
     DimensionMismatchError: Cannot calculate 5. A + 10. V, units do not match (units are amp and volt).
@@ -194,7 +194,7 @@ Let's start by defining a simple neuron model. In Brian, all models are
 defined by systems of differential equations. Here's a simple example of
 what that looks like:
 
-.. code:: python
+.. code:: ipython2
 
     tau = 10*ms
     eqs = '''
@@ -211,7 +211,7 @@ the *variable* defined by the equation, i.e. in this case :math:`v`.
 
 Now let's use this definition to create a neuron.
 
-.. code:: python
+.. code:: ipython2
 
     G = NeuronGroup(1, eqs)
 
@@ -223,7 +223,7 @@ differential equations.
 Let's see what happens if we didn't put the variable ``tau`` in the
 equation:
 
-.. code:: python
+.. code:: ipython2
 
     eqs = '''
     dv/dt = 1-v : 1
@@ -246,11 +246,11 @@ equation:
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
-       2410                         raise DimensionMismatchError(error_message,
-       2411                                                      newkeyset[k])
-    -> 2412             result = f(*args, **kwds)
-       2413             if 'result' in au:
-       2414                 if au['result'] == bool:
+       2353                                                      get_dimensions(newkeyset[k]))
+       2354 
+    -> 2355             result = f(*args, **kwds)
+       2356             if 'result' in au:
+       2357                 if au['result'] == bool:
 
 
     /home/marcel/programming/brian2/brian2/core/magic.pyc in run(duration, report, report_period, namespace, profile, level)
@@ -278,19 +278,19 @@ equation:
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
-       2410                         raise DimensionMismatchError(error_message,
-       2411                                                      newkeyset[k])
-    -> 2412             result = f(*args, **kwds)
-       2413             if 'result' in au:
-       2414                 if au['result'] == bool:
+       2353                                                      get_dimensions(newkeyset[k]))
+       2354 
+    -> 2355             result = f(*args, **kwds)
+       2356             if 'result' in au:
+       2357                 if au['result'] == bool:
 
 
     /home/marcel/programming/brian2/brian2/core/network.pyc in run(self, duration, report, report_period, namespace, profile, level)
-        787             namespace = get_local_namespace(level=level+3)
-        788 
-    --> 789         self.before_run(namespace)
-        790 
-        791         if len(self.objects)==0:
+        943             namespace = get_local_namespace(level=level+3)
+        944 
+    --> 945         self.before_run(namespace)
+        946 
+        947         if len(self.objects)==0:
 
 
     /home/marcel/programming/brian2/brian2/core/base.pyc in device_override_decorated_function(*args, **kwds)
@@ -302,20 +302,20 @@ equation:
 
 
     /home/marcel/programming/brian2/brian2/core/network.pyc in before_run(self, run_namespace)
-        687                     obj.before_run(run_namespace)
-        688                 except Exception as ex:
-    --> 689                     raise brian_object_exception("An error occurred when preparing an object.", obj, ex)
-        690 
-        691         # Check that no object has been run as part of another network before
+        843                     obj.before_run(run_namespace)
+        844                 except Exception as ex:
+    --> 845                     raise brian_object_exception("An error occurred when preparing an object.", obj, ex)
+        846 
+        847         # Check that no object has been run as part of another network before
 
 
     BrianObjectException: Original error and traceback:
     Traceback (most recent call last):
-      File "/home/marcel/programming/brian2/brian2/core/network.py", line 687, in before_run
+      File "/home/marcel/programming/brian2/brian2/core/network.py", line 843, in before_run
         obj.before_run(run_namespace)
-      File "/home/marcel/programming/brian2/brian2/groups/neurongroup.py", line 778, in before_run
+      File "/home/marcel/programming/brian2/brian2/groups/neurongroup.py", line 790, in before_run
         self.equations.check_units(self, run_namespace=run_namespace)
-      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 867, in check_units
+      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 913, in check_units
         *ex.dims)
     DimensionMismatchError: Inconsistent units in differential equation defining variable v:
     Expression 1-v does not have the expected unit hertz (unit is 1).
@@ -343,7 +343,7 @@ insist that you always specify dimensionally consistent equations.
 
 Now let's go back to the good equations and actually run the simulation.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -358,7 +358,7 @@ Now let's go back to the good equations and actually run the simulation.
 
 .. parsed-literal::
 
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.07s). [brian2.stateupdaters.base.method_choice]
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.05s). [brian2.stateupdaters.base.method_choice]
 
 
 First off, ignore that ``start_scope()`` at the top of the cell. You'll
@@ -375,7 +375,7 @@ So, what has happened here? Well, the command ``run(100*ms)`` runs the
 simulation for 100 ms. We can see that this has worked by printing the
 value of the variable ``v`` before and after the simulation.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -397,7 +397,7 @@ would tend towards the value 1, which is just what we see. Specifically,
 we'd expect ``v`` to have the value ``1-exp(-t/tau)``. Let's see if
 that's right.
 
-.. code:: python
+.. code:: ipython2
 
     print('Expected value of v = %s' % (1-exp(-100*ms/tau)))
 
@@ -412,7 +412,7 @@ Good news, the simulation gives the value we'd expect!
 Now let's take a look at a graph of how the variable ``v`` evolves over
 time.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -434,7 +434,7 @@ This time we only ran the simulation for 30 ms so that we can see the
 behaviour better. It looks like it's behaving as expected, but let's
 just check that analytically by plotting the expected behaviour on top.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -443,8 +443,8 @@ just check that analytically by plotting the expected behaviour on top.
     
     run(30*ms)
     
-    plot(M.t/ms, M.v[0], 'b', label='Brian')
-    plot(M.t/ms, 1-exp(-M.t/tau), 'r--',label='Analytic')
+    plot(M.t/ms, M.v[0], 'C0', label='Brian')
+    plot(M.t/ms, 1-exp(-M.t/tau), 'C1--',label='Analytic')
     xlabel('Time (ms)')
     ylabel('v')
     legend();
@@ -454,7 +454,7 @@ just check that analytically by plotting the expected behaviour on top.
 .. image:: 1-intro-to-brian-neurons_image_33_0.png
 
 
-As you can see, the blue (Brian) and dashed red (analytic solution)
+As you can see, the blue (Brian) and dashed orange (analytic solution)
 lines coincide.
 
 In this example, we used the object ``StateMonitor`` object. This is
@@ -468,7 +468,7 @@ it usually uses up too much RAM to record the values of all neurons.
 Now try modifying the equations and parameters and see what happens in
 the cell below.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -500,7 +500,7 @@ Adding spikes
 So far we haven't done anything neuronal, just played around with
 differential equations. Now let's start adding spiking behaviour.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -533,7 +533,7 @@ until ``v`` crosses the threshold ``v>0.8`` at which point you see it
 reset to 0. You can't see it in this figure, but internally Brian has
 registered this event as a spike. Let's have a look at that.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -556,7 +556,7 @@ record as its argument and stores the spike times in the variable ``t``.
 Let's plot those spikes on top of the other figure to see that it's
 getting it right.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -569,7 +569,7 @@ getting it right.
     
     plot(statemon.t/ms, statemon.v[0])
     for t in spikemon.t:
-        axvline(t/ms, ls='--', c='r', lw=3)
+        axvline(t/ms, ls='--', c='C1', lw=3)
     xlabel('Time (ms)')
     ylabel('v');
 
@@ -578,8 +578,8 @@ getting it right.
 .. image:: 1-intro-to-brian-neurons_image_41_0.png
 
 
-Here we've used the ``axvline`` command from ``matplotlib`` to draw a
-red, dashed vertical line at the time of each spike recorded by the
+Here we've used the ``axvline`` command from ``matplotlib`` to draw an
+orange, dashed vertical line at the time of each spike recorded by the
 ``SpikeMonitor``.
 
 Now try changing the strings for ``threshold`` and ``reset`` in the cell
@@ -593,7 +593,7 @@ after the neuron fires a spike it becomes refractory for a certain
 duration and cannot fire another spike until this period is over. Here's
 how we do that in Brian.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -611,7 +611,7 @@ how we do that in Brian.
     
     plot(statemon.t/ms, statemon.v[0])
     for t in spikemon.t:
-        axvline(t/ms, ls='--', c='r', lw=3)
+        axvline(t/ms, ls='--', c='C1', lw=3)
     xlabel('Time (ms)')
     ylabel('v');
 
@@ -635,7 +635,7 @@ Here's what would happen if we didn't include ``(unless refractory)``.
 Note that we've also decreased the value of ``tau`` and increased the
 length of the refractory period to make the behaviour clearer.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -653,8 +653,8 @@ length of the refractory period to make the behaviour clearer.
     
     plot(statemon.t/ms, statemon.v[0])
     for t in spikemon.t:
-        axvline(t/ms, ls='--', c='r', lw=3)
-    axhline(0.8, ls=':', c='g', lw=3)
+        axvline(t/ms, ls='--', c='C1', lw=3)
+    axhline(0.8, ls=':', c='C2', lw=3)
     xlabel('Time (ms)')
     ylabel('v')
     print("Spike times: %s" % spikemon.t[:])
@@ -691,7 +691,7 @@ Multiple neurons
 So far we've only been working with a single neuron. Let's do something
 interesting with multiple neurons.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -737,7 +737,7 @@ To make these multiple neurons do something more interesting, let's
 introduce per-neuron parameters that don't have a differential equation
 attached to them.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -811,7 +811,7 @@ method <https://en.wikipedia.org/wiki/Euler%E2%80%93Maruyama_method>`__);
 the ``'linear'`` method that we used earlier is not applicable to
 stochastic differential equations.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
@@ -867,7 +867,7 @@ You could also try out the things you've learned in this cell.
 Once you're done with that you can move on to the next tutorial on
 Synapses.
 
-.. code:: python
+.. code:: ipython2
 
     start_scope()
     
