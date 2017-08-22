@@ -25,6 +25,7 @@ For more information about how to use Jupyter Notebooks, see the
 
    1-intro-to-brian-neurons
    2-intro-to-brian-synapses
+   3-intro-to-brian-simulations
 
 
 Interactive notebooks and files
@@ -37,8 +38,13 @@ Interactive notebooks and files
 .. |launchbinder2introtobriansynapses| image:: http://mybinder.org/badge.svg
 .. _launchbinder2introtobriansynapses: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/2-intro-to-brian-synapses.ipynb
 
+
+.. |launchbinder3introtobriansimulations| image:: http://mybinder.org/badge.svg
+.. _launchbinder3introtobriansimulations: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/3-intro-to-brian-simulations.ipynb
+
 * |launchbinder1introtobrianneurons|_ :download:`Introduction to Brian part 1: Neurons <1-intro-to-brian-neurons.ipynb>`
 * |launchbinder2introtobriansynapses|_ :download:`Introduction to Brian part 2: Synapses <2-intro-to-brian-synapses.ipynb>`
+* |launchbinder3introtobriansimulations|_ :download:`Introduction to Brian part 3: Simulations <3-intro-to-brian-simulations.ipynb>`
 
 
 .. _`Jupyter Notebooks`: http://jupyter-notebook-beginner-guide.readthedocs.org/en/latest/what_is_jupyter.html
