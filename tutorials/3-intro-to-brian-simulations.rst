@@ -14,19 +14,22 @@ As before we start by importing the Brian package and setting up
 matplotlib for IPython:
 
 
-.. |launchbinder| image:: http://mybinder.org/badge.svg
-.. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/3-intro-to-brian-simulations.ipynb
+.. only:: html
 
-.. note::
-   This tutorial is a static non-editable version. You can launch an
-   interactive, editable version without installing any local files
-   using the Binder service (although note that at some times this
-   may be slow or fail to open): |launchbinder|_
+    .. |launchbinder| image:: http://mybinder.org/badge.svg
+    .. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/3-intro-to-brian-simulations.ipynb
 
-   Alternatively, you can download a copy of the notebook file
-   to use locally: :download:`3-intro-to-brian-simulations.ipynb`
+    .. note::
+       This tutorial is a static non-editable version. You can launch an
+       interactive, editable version without installing any local files
+       using the Binder service (although note that at some times this
+       may be slow or fail to open): |launchbinder|_
 
-   See the :doc:`tutorial overview page <index>` for more details.
+       Alternatively, you can download a copy of the notebook file
+       to use locally: :download:`3-intro-to-brian-simulations.ipynb`
+
+       See the :doc:`tutorial overview page <index>` for more details.
+
 
 
 .. code:: ipython2

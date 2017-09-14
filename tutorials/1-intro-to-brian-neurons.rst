@@ -3,19 +3,22 @@ Introduction to Brian part 1: Neurons
 =====================================
 
 
-.. |launchbinder| image:: http://mybinder.org/badge.svg
-.. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/1-intro-to-brian-neurons.ipynb
+.. only:: html
 
-.. note::
-   This tutorial is a static non-editable version. You can launch an
-   interactive, editable version without installing any local files
-   using the Binder service (although note that at some times this
-   may be slow or fail to open): |launchbinder|_
+    .. |launchbinder| image:: http://mybinder.org/badge.svg
+    .. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/1-intro-to-brian-neurons.ipynb
 
-   Alternatively, you can download a copy of the notebook file
-   to use locally: :download:`1-intro-to-brian-neurons.ipynb`
+    .. note::
+       This tutorial is a static non-editable version. You can launch an
+       interactive, editable version without installing any local files
+       using the Binder service (although note that at some times this
+       may be slow or fail to open): |launchbinder|_
 
-   See the :doc:`tutorial overview page <index>` for more details.
+       Alternatively, you can download a copy of the notebook file
+       to use locally: :download:`1-intro-to-brian-neurons.ipynb`
+
+       See the :doc:`tutorial overview page <index>` for more details.
+
 
 
 All Brian scripts start with the following. If you're trying this
@@ -286,11 +289,11 @@ equation:
 
 
     /home/marcel/programming/brian2/brian2/core/network.pyc in run(self, duration, report, report_period, namespace, profile, level)
-        943             namespace = get_local_namespace(level=level+3)
-        944 
-    --> 945         self.before_run(namespace)
-        946 
-        947         if len(self.objects)==0:
+        949             namespace = get_local_namespace(level=level+3)
+        950 
+    --> 951         self.before_run(namespace)
+        952 
+        953         if len(self.objects)==0:
 
 
     /home/marcel/programming/brian2/brian2/core/base.pyc in device_override_decorated_function(*args, **kwds)
@@ -302,20 +305,20 @@ equation:
 
 
     /home/marcel/programming/brian2/brian2/core/network.pyc in before_run(self, run_namespace)
-        843                     obj.before_run(run_namespace)
-        844                 except Exception as ex:
-    --> 845                     raise brian_object_exception("An error occurred when preparing an object.", obj, ex)
-        846 
-        847         # Check that no object has been run as part of another network before
+        841                     obj.before_run(run_namespace)
+        842                 except Exception as ex:
+    --> 843                     raise brian_object_exception("An error occurred when preparing an object.", obj, ex)
+        844 
+        845         # Check that no object has been run as part of another network before
 
 
     BrianObjectException: Original error and traceback:
     Traceback (most recent call last):
-      File "/home/marcel/programming/brian2/brian2/core/network.py", line 843, in before_run
+      File "/home/marcel/programming/brian2/brian2/core/network.py", line 841, in before_run
         obj.before_run(run_namespace)
       File "/home/marcel/programming/brian2/brian2/groups/neurongroup.py", line 790, in before_run
         self.equations.check_units(self, run_namespace=run_namespace)
-      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 913, in check_units
+      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 959, in check_units
         *ex.dims)
     DimensionMismatchError: Inconsistent units in differential equation defining variable v:
     Expression 1-v does not have the expected unit hertz (unit is 1).
@@ -358,7 +361,7 @@ Now let's go back to the good equations and actually run the simulation.
 
 .. parsed-literal::
 
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.05s). [brian2.stateupdaters.base.method_choice]
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.04s). [brian2.stateupdaters.base.method_choice]
 
 
 First off, ignore that ``start_scope()`` at the top of the cell. You'll

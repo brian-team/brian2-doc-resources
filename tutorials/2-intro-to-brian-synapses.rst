@@ -3,19 +3,22 @@ Introduction to Brian part 2: Synapses
 ======================================
 
 
-.. |launchbinder| image:: http://mybinder.org/badge.svg
-.. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/2-intro-to-brian-synapses.ipynb
+.. only:: html
 
-.. note::
-   This tutorial is a static non-editable version. You can launch an
-   interactive, editable version without installing any local files
-   using the Binder service (although note that at some times this
-   may be slow or fail to open): |launchbinder|_
+    .. |launchbinder| image:: http://mybinder.org/badge.svg
+    .. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/2-intro-to-brian-synapses.ipynb
 
-   Alternatively, you can download a copy of the notebook file
-   to use locally: :download:`2-intro-to-brian-synapses.ipynb`
+    .. note::
+       This tutorial is a static non-editable version. You can launch an
+       interactive, editable version without installing any local files
+       using the Binder service (although note that at some times this
+       may be slow or fail to open): |launchbinder|_
 
-   See the :doc:`tutorial overview page <index>` for more details.
+       Alternatively, you can download a copy of the notebook file
+       to use locally: :download:`2-intro-to-brian-synapses.ipynb`
+
+       See the :doc:`tutorial overview page <index>` for more details.
+
 
 
 If you haven't yet read part 1: Neurons, go read that now.
@@ -433,31 +436,31 @@ We define two new variables :math:`a_{pre}` and :math:`a_{post}` which
 are "traces" of pre- and post-synaptic activity, governed by the
 differential equations:
 
-.. math::
+.. raw:: latex
 
-   \begin{eqnarray}
-   \tau_{pre}\frac{\mathrm{d}}{\mathrm{d}t} a_{pre} &=& -a_{pre}\\
-   \tau_{post}\frac{\mathrm{d}}{\mathrm{d}t} a_{post} &=& -a_{post}\\
-   \end{eqnarray}
+   \begin{align}
+   \tau_{pre}\frac{\mathrm{d}}{\mathrm{d}t} a_{pre} &= -a_{pre}\\
+   \tau_{post}\frac{\mathrm{d}}{\mathrm{d}t} a_{post} &= -a_{post}\\
+   \end{align}
 
 When a presynaptic spike occurs, the presynaptic trace is updated and
 the weight is modified according to the rule:
 
-.. math::
+.. raw:: latex
 
-   \begin{eqnarray}
-   a_{pre} &\rightarrow& a_{pre}+A_{pre}\\
-   w &\rightarrow& w+a_{post}
-   \end{eqnarray}
+   \begin{align}
+   a_{pre} &\rightarrow a_{pre}+A_{pre}\\
+   w &\rightarrow w+a_{post}
+   \end{align}
 
 When a postsynaptic spike occurs:
 
-.. math::
+.. raw:: latex
 
-   \begin{eqnarray}
-   a_{post} &\rightarrow& a_{post}+A_{post}\\
-   w &\rightarrow& w+a_{pre}
-   \end{eqnarray}
+   \begin{align}
+   a_{post} &\rightarrow a_{post}+A_{post}\\
+   w &\rightarrow w+a_{pre}
+   \end{align}
 
 To see that this formulation is equivalent, you just have to check that
 the equations sum linearly, and consider two cases: what happens if the
