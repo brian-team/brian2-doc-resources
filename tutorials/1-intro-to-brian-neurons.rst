@@ -361,7 +361,7 @@ Now let's go back to the good equations and actually run the simulation.
 
 .. parsed-literal::
 
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'linear' (took 0.04s). [brian2.stateupdaters.base.method_choice]
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'exact' (took 0.04s). [brian2.stateupdaters.base.method_choice]
 
 
 First off, ignore that ``start_scope()`` at the top of the cell. You'll
@@ -382,7 +382,7 @@ value of the variable ``v`` before and after the simulation.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs, method='linear')
+    G = NeuronGroup(1, eqs, method='exact')
     print('Before v = %s' % G.v[0])
     run(100*ms)
     print('After v = %s' % G.v[0])
@@ -419,7 +419,7 @@ time.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs, method='linear')
+    G = NeuronGroup(1, eqs, method='exact')
     M = StateMonitor(G, 'v', record=True)
     
     run(30*ms)
@@ -441,7 +441,7 @@ just check that analytically by plotting the expected behaviour on top.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs, method='linear')
+    G = NeuronGroup(1, eqs, method='exact')
     M = StateMonitor(G, 'v', record=0)
     
     run(30*ms)
@@ -512,7 +512,7 @@ differential equations. Now let's start adding spiking behaviour.
     dv/dt = (1-v)/tau : 1
     '''
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='linear')
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='exact')
     
     M = StateMonitor(G, 'v', record=0)
     run(50*ms)
@@ -540,7 +540,7 @@ registered this event as a spike. Let's have a look at that.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='linear')
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='exact')
     
     spikemon = SpikeMonitor(G)
     
@@ -563,7 +563,7 @@ getting it right.
 
     start_scope()
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='linear')
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='exact')
     
     statemon = StateMonitor(G, 'v', record=0)
     spikemon = SpikeMonitor(G)
@@ -605,7 +605,7 @@ how we do that in Brian.
     dv/dt = (1-v)/tau : 1 (unless refractory)
     '''
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', refractory=5*ms, method='linear')
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', refractory=5*ms, method='exact')
     
     statemon = StateMonitor(G, 'v', record=0)
     spikemon = SpikeMonitor(G)
@@ -647,7 +647,7 @@ length of the refractory period to make the behaviour clearer.
     dv/dt = (1-v)/tau : 1
     '''
     
-    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', refractory=15*ms, method='linear')
+    G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', refractory=15*ms, method='exact')
     
     statemon = StateMonitor(G, 'v', record=0)
     spikemon = SpikeMonitor(G)
@@ -704,7 +704,7 @@ interesting with multiple neurons.
     dv/dt = (2-v)/tau : 1
     '''
     
-    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0', method='linear')
+    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0', method='exact')
     G.v = 'rand()'
     
     spikemon = SpikeMonitor(G)
@@ -754,7 +754,7 @@ attached to them.
     v0 : 1
     '''
     
-    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0', refractory=5*ms, method='linear')
+    G = NeuronGroup(N, eqs, threshold='v>1', reset='v=0', refractory=5*ms, method='exact')
     M = SpikeMonitor(G)
     
     G.v0 = 'i*v0_max/(N-1)'
@@ -811,7 +811,7 @@ differential equations for more details). Note that we also changed the
 ``method`` keyword argument to use ``'euler'`` (which stands for the
 `Euler-Maruyama
 method <https://en.wikipedia.org/wiki/Euler%E2%80%93Maruyama_method>`__);
-the ``'linear'`` method that we used earlier is not applicable to
+the ``'exact'`` method that we used earlier is not applicable to
 stochastic differential equations.
 
 .. code:: ipython2

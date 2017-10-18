@@ -65,7 +65,7 @@ depending on its membrane time constant? Let's set that up.
         eqs = '''
         dv/dt = -v/tau : 1
         '''
-        G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='linear')
+        G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='exact')
         S = Synapses(P, G, on_pre='v += weight')
         S.connect()
         M = SpikeMonitor(G)
@@ -101,7 +101,7 @@ restore it at the beginning of each iteration.
     eqs = '''
     dv/dt = -v/tau : 1
     '''
-    G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='linear')
+    G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='exact')
     S = Synapses(P, G, on_pre='v += weight')
     S.connect()
     M = SpikeMonitor(G)
@@ -162,7 +162,7 @@ time.
     eqs = '''
     dv/dt = -v/tau : 1
     '''
-    G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='linear')
+    G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='exact')
     S = Synapses(SGG, G, on_pre='v += weight')
     S.connect()
     M = SpikeMonitor(G)
@@ -215,7 +215,7 @@ the group.
     tau : second
     '''
     # And we have num_tau output neurons, each with a different tau
-    G = NeuronGroup(num_tau, eqs, threshold='v>1', reset='v=0', method='linear')
+    G = NeuronGroup(num_tau, eqs, threshold='v>1', reset='v=0', method='exact')
     G.tau = tau_range
     S = Synapses(P, G, on_pre='v += weight')
     S.connect()
@@ -250,11 +250,11 @@ constant.
     trains = M.spike_trains()
     isi_mu = full(num_tau, nan)*second
     isi_std = full(num_tau, nan)*second
-    for i in range(num_tau):
-        train = diff(trains[i])
+    for idx in range(num_tau):
+        train = diff(trains[idx])
         if len(train)>1:
-            isi_mu[i] = mean(train)
-            isi_std[i] = std(train)
+            isi_mu[idx] = mean(train)
+            isi_std[idx] = std(train)
     errorbar(tau_range/ms, isi_mu/ms, yerr=isi_std/ms)
     xlabel(r'$\tau$ (ms)')
     ylabel('Interspike interval (ms)');
@@ -307,10 +307,10 @@ a Hodgkin-Huxley type neuron.
     statemon = StateMonitor(group, 'v', record=True)
     spikemon = SpikeMonitor(group, variables='v')
     figure(figsize=(9, 4))
-    for i in range(5):
+    for l in range(5):
         group.I = rand()*50*nA
         run(10*ms)
-        axvline(i*10, ls='--', c='k')
+        axvline(l*10, ls='--', c='k')
     axhline(El/mV, ls='-', c='lightgray', lw=3)
     plot(statemon.t/ms, statemon.v[0]/mV, '-b')
     plot(spikemon.t/ms, spikemon.v/mV, 'ob')
@@ -343,8 +343,8 @@ efficient standalone mode of Brian. Here's another way.
     run(50*ms)
     figure(figsize=(9, 4))
     # we keep the loop just to draw the vertical lines
-    for i in range(5):
-        axvline(i*10, ls='--', c='k')
+    for l in range(5):
+        axvline(l*10, ls='--', c='k')
     axhline(El/mV, ls='-', c='lightgray', lw=3)
     plot(statemon.t/ms, statemon.v[0]/mV, '-b')
     plot(spikemon.t/ms, spikemon.v/mV, 'ob')
@@ -379,8 +379,8 @@ Python code (but won't work with the standalone mode).
         group.I = rand()*50*nA
     run(50*ms)
     figure(figsize=(9, 4))
-    for i in range(5):
-        axvline(i*10, ls='--', c='k')
+    for l in range(5):
+        axvline(l*10, ls='--', c='k')
     axhline(El/mV, ls='-', c='lightgray', lw=3)
     plot(statemon.t/ms, statemon.v[0]/mV, '-b')
     plot(spikemon.t/ms, spikemon.v/mV, 'ob')
@@ -422,8 +422,8 @@ different capacitance to see how that affects the behaviour of the cell.
     group.run_regularly('I = rand()*50*nA', dt=10*ms)
     run(50*ms)
     figure(figsize=(9, 4))
-    for i in range(5):
-        axvline(i*10, ls='--', c='k')
+    for l in range(5):
+        axvline(l*10, ls='--', c='k')
     axhline(El/mV, ls='-', c='lightgray', lw=3)
     plot(statemon.t/ms, statemon.v.T/mV, '-')
     xlabel('Time (ms)')
@@ -481,8 +481,8 @@ variable, meaning it has the same value for each neuron.
     group.run_regularly('I = rand()*50*nA', dt=10*ms)
     run(50*ms)
     figure(figsize=(9, 4))
-    for i in range(5):
-        axvline(i*10, ls='--', c='k')
+    for l in range(5):
+        axvline(l*10, ls='--', c='k')
     axhline(El/mV, ls='-', c='lightgray', lw=3)
     plot(statemon.t/ms, statemon.v.T/mV, '-')
     xlabel('Time (ms)')
@@ -543,7 +543,7 @@ reproducing the picture above but using ``TimedArray``.
     dv/dt = (I-v)/tau : 1
     I = I_recorded(t) : 1
     '''
-    G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='linear')
+    G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='exact')
     M = StateMonitor(G, variables=True, record=True)
     run(200*ms)
     plot(M.t/ms, M.v[0], label='v')
@@ -559,11 +559,11 @@ reproducing the picture above but using ``TimedArray``.
 
 Note that for the example where we put the ``sin`` function directly in
 the equations, we had to use the ``method='euler'`` argument because the
-linear integrator wouldn't work here (try it!). However, ``TimedArray``
+exact integrator wouldn't work here (try it!). However, ``TimedArray``
 is considered to be constant over its time step and so the linear
 integrator can be used. This means you won't get the same behaviour from
 these two methods for two reasons. Firstly, the numerical integration
-methods ``linear`` and ``euler`` give slightly different results.
+methods ``exact`` and ``euler`` give slightly different results.
 Secondly, ``sin`` is not constant over a timestep whereas ``TimedArray``
 is.
 
@@ -588,7 +588,7 @@ make a weird "recorded" current and run it on that.
     dv/dt = (I-v)/tau : 1
     I = I_recorded(t) : 1
     '''
-    G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='linear')
+    G = NeuronGroup(1, eqs, threshold='v>1', reset='v=0', method='exact')
     M = StateMonitor(G, variables=True, record=True)
     run(200*ms)
     plot(M.t/ms, M.v[0], label='v')
@@ -627,11 +627,6 @@ from a file. See if you can work out how this example works.
     ylabel('Neuron index');
 
 
-.. parsed-literal::
 
-    WARNING    "i" is an internal variable of group "neurongroup_5", but also exists in the run namespace with the value 4. The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
-
-
-
-.. image:: 3-intro-to-brian-simulations_image_32_1.png
+.. image:: 3-intro-to-brian-simulations_image_32_0.png
 

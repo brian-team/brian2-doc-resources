@@ -47,7 +47,7 @@ synapse that causes an instantaneous change in a variable after a spike.
     I : 1
     tau : second
     '''
-    G = NeuronGroup(2, eqs, threshold='v>1', reset='v = 0', method='linear')
+    G = NeuronGroup(2, eqs, threshold='v>1', reset='v = 0', method='exact')
     G.I = [2, 0]
     G.tau = [10, 100]*ms
     
@@ -112,7 +112,7 @@ different synapses. We do that by introducing synapse equations.
     I : 1
     tau : second
     '''
-    G = NeuronGroup(3, eqs, threshold='v>1', reset='v = 0', method='linear')
+    G = NeuronGroup(3, eqs, threshold='v>1', reset='v = 0', method='exact')
     G.I = [2, 0, 0]
     G.tau = [10, 100, 100]*ms
     
@@ -166,7 +166,7 @@ act with a certain delay.
     I : 1
     tau : second
     '''
-    G = NeuronGroup(3, eqs, threshold='v>1', reset='v = 0', method='linear')
+    G = NeuronGroup(3, eqs, threshold='v>1', reset='v = 0', method='exact')
     G.I = [2, 0, 0]
     G.tau = [10, 100, 100]*ms
     
