@@ -133,24 +133,24 @@ happens?
 
     DimensionMismatchErrorTraceback (most recent call last)
 
-    <ipython-input-8-ad1fc5691a4b> in <module>()
+    <ipython-input-8-245c0c0332d1> in <module>()
     ----> 1 5*amp+10*volt
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in __add__(self, other)
-       1422         return self._binary_operation(other, operator.add,
-       1423                                       fail_for_mismatch=True,
-    -> 1424                                       operator_str='+')
-       1425 
-       1426     def __radd__(self, other):
+       1427         return self._binary_operation(other, operator.add,
+       1428                                       fail_for_mismatch=True,
+    -> 1429                                       operator_str='+')
+       1430 
+       1431     def __radd__(self, other):
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in _binary_operation(self, other, operation, dim_operation, fail_for_mismatch, operator_str, inplace)
-       1362                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
-       1363                                                            value1=self,
-    -> 1364                                                            value2=other)
-       1365 
-       1366         if other_dim is None:
+       1367                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
+       1368                                                            value1=self,
+    -> 1369                                                            value2=other)
+       1370 
+       1371         if other_dim is None:
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in fail_for_dimension_mismatch(obj1, obj2, error_message, **error_quantities)
@@ -242,18 +242,18 @@ equation:
 
     BrianObjectExceptionTraceback (most recent call last)
 
-    <ipython-input-11-d086eea0b2de> in <module>()
+    <ipython-input-11-97ed109f5888> in <module>()
           3 '''
           4 G = NeuronGroup(1, eqs)
     ----> 5 run(100*ms)
     
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
-       2353                                                      get_dimensions(newkeyset[k]))
-       2354 
-    -> 2355             result = f(*args, **kwds)
-       2356             if 'result' in au:
-       2357                 if au['result'] == bool:
+       2373                                                      get_dimensions(newkeyset[k]))
+       2374 
+    -> 2375             result = f(*args, **kwds)
+       2376             if 'result' in au:
+       2377                 if au['result'] == bool:
 
 
     /home/marcel/programming/brian2/brian2/core/magic.pyc in run(duration, report, report_period, namespace, profile, level)
@@ -273,19 +273,19 @@ equation:
 
 
     /home/marcel/programming/brian2/brian2/core/base.pyc in device_override_decorated_function(*args, **kwds)
-        276                 return getattr(curdev, name)(*args, **kwds)
-        277             else:
-    --> 278                 return func(*args, **kwds)
-        279 
-        280         device_override_decorated_function.__doc__ = func.__doc__
+        274                 return getattr(curdev, name)(*args, **kwds)
+        275             else:
+    --> 276                 return func(*args, **kwds)
+        277 
+        278         device_override_decorated_function.__doc__ = func.__doc__
 
 
     /home/marcel/programming/brian2/brian2/units/fundamentalunits.pyc in new_f(*args, **kwds)
-       2353                                                      get_dimensions(newkeyset[k]))
-       2354 
-    -> 2355             result = f(*args, **kwds)
-       2356             if 'result' in au:
-       2357                 if au['result'] == bool:
+       2373                                                      get_dimensions(newkeyset[k]))
+       2374 
+    -> 2375             result = f(*args, **kwds)
+       2376             if 'result' in au:
+       2377                 if au['result'] == bool:
 
 
     /home/marcel/programming/brian2/brian2/core/network.pyc in run(self, duration, report, report_period, namespace, profile, level)
@@ -297,11 +297,11 @@ equation:
 
 
     /home/marcel/programming/brian2/brian2/core/base.pyc in device_override_decorated_function(*args, **kwds)
-        276                 return getattr(curdev, name)(*args, **kwds)
-        277             else:
-    --> 278                 return func(*args, **kwds)
-        279 
-        280         device_override_decorated_function.__doc__ = func.__doc__
+        274                 return getattr(curdev, name)(*args, **kwds)
+        275             else:
+    --> 276                 return func(*args, **kwds)
+        277 
+        278         device_override_decorated_function.__doc__ = func.__doc__
 
 
     /home/marcel/programming/brian2/brian2/core/network.pyc in before_run(self, run_namespace)
@@ -316,16 +316,16 @@ equation:
     Traceback (most recent call last):
       File "/home/marcel/programming/brian2/brian2/core/network.py", line 841, in before_run
         obj.before_run(run_namespace)
-      File "/home/marcel/programming/brian2/brian2/groups/neurongroup.py", line 790, in before_run
+      File "/home/marcel/programming/brian2/brian2/groups/neurongroup.py", line 811, in before_run
         self.equations.check_units(self, run_namespace=run_namespace)
-      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 959, in check_units
+      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 963, in check_units
         *ex.dims)
     DimensionMismatchError: Inconsistent units in differential equation defining variable v:
     Expression 1-v does not have the expected unit hertz (unit is 1).
     
     Error encountered with object named "neurongroup_1".
     Object was created here (most recent call only, full details in debug log):
-      File "<ipython-input-11-d086eea0b2de>", line 4, in <module>
+      File "<ipython-input-11-97ed109f5888>", line 4, in <module>
         G = NeuronGroup(1, eqs)
     
     An error occurred when preparing an object. DimensionMismatchError: Inconsistent units in differential equation defining variable v:
@@ -361,7 +361,7 @@ Now let's go back to the good equations and actually run the simulation.
 
 .. parsed-literal::
 
-    INFO       No numerical integration method specified for group 'neurongroup', using method 'exact' (took 0.04s). [brian2.stateupdaters.base.method_choice]
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'exact' (took 0.05s). [brian2.stateupdaters.base.method_choice]
 
 
 First off, ignore that ``start_scope()`` at the top of the cell. You'll
@@ -391,7 +391,7 @@ value of the variable ``v`` before and after the simulation.
 .. parsed-literal::
 
     Before v = 0.0
-    After v = 0.99995460007
+    After v = 0.9999546000702376
 
 
 By default, all variables start with the value 0. Since the differential
@@ -407,7 +407,7 @@ that's right.
 
 .. parsed-literal::
 
-    Expected value of v = 0.99995460007
+    Expected value of v = 0.9999546000702375
 
 
 Good news, the simulation gives the value we'd expect!
@@ -551,7 +551,7 @@ registered this event as a spike. Let's have a look at that.
 
 .. parsed-literal::
 
-    Spike times: [ 16.   32.1  48.2] ms
+    Spike times: [16.  32.1 48.2] ms
 
 
 The ``SpikeMonitor`` object takes the group whose spikes you want to
@@ -665,7 +665,7 @@ length of the refractory period to make the behaviour clearer.
 
 .. parsed-literal::
 
-    Spike times: [  8.   23.1  38.2] ms
+    Spike times: [ 8. 23. 38.] ms
 
 
 

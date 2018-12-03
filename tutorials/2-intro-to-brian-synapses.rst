@@ -436,26 +436,29 @@ We define two new variables :math:`a_{pre}` and :math:`a_{post}` which
 are "traces" of pre- and post-synaptic activity, governed by the
 differential equations:
 
-.. raw:: latex
+.. math::
+
 
    \begin{align}
    \tau_{pre}\frac{\mathrm{d}}{\mathrm{d}t} a_{pre} &= -a_{pre}\\
    \tau_{post}\frac{\mathrm{d}}{\mathrm{d}t} a_{post} &= -a_{post}\\
    \end{align}
 
-When a presynaptic spike occurs, the presynaptic trace is updated and
+ When a presynaptic spike occurs, the presynaptic trace is updated and
 the weight is modified according to the rule:
 
-.. raw:: latex
+.. math::
+
 
    \begin{align}
    a_{pre} &\rightarrow a_{pre}+A_{pre}\\
    w &\rightarrow w+a_{post}
    \end{align}
 
-When a postsynaptic spike occurs:
+ When a postsynaptic spike occurs:
 
-.. raw:: latex
+.. math::
+
 
    \begin{align}
    a_{post} &\rightarrow a_{post}+A_{post}\\
