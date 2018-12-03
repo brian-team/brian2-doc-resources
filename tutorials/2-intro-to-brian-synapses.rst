@@ -441,10 +441,10 @@ differential equations:
 
    \begin{align}
    \tau_{pre}\frac{\mathrm{d}}{\mathrm{d}t} a_{pre} &= -a_{pre}\\
-   \tau_{post}\frac{\mathrm{d}}{\mathrm{d}t} a_{post} &= -a_{post}\\
+   \tau_{post}\frac{\mathrm{d}}{\mathrm{d}t} a_{post} &= -a_{post}
    \end{align}
 
- When a presynaptic spike occurs, the presynaptic trace is updated and
+When a presynaptic spike occurs, the presynaptic trace is updated and
 the weight is modified according to the rule:
 
 .. math::
@@ -455,7 +455,7 @@ the weight is modified according to the rule:
    w &\rightarrow w+a_{post}
    \end{align}
 
- When a postsynaptic spike occurs:
+When a postsynaptic spike occurs:
 
 .. math::
 
