@@ -14,8 +14,7 @@ The tutorial consists of a series of `Jupyter Notebooks`_ [#]_.
     to edit and run the code - there are two options. The easiest option is to click
     on the "Launch Binder" link, which will open up an interactive version in the
     browser without having to install Brian locally. This uses the
-    Binder service provided by the
-    `Freeman lab <https://www.janelia.org/lab/freeman-lab>`_. Occasionally, this
+    `mybinder.org <http://mybinder.org>`_ service. Occasionally, this
     service will be down or running slowly. The other option is to download the
     notebook file and run it locally, which requires you to have Brian installed.
 
@@ -36,13 +35,13 @@ For more information about how to use Jupyter Notebooks, see the
     -------------------------------
     
     .. |launchbinder1introtobrianneurons| image:: http://mybinder.org/badge.svg
-    .. _launchbinder1introtobrianneurons: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/1-intro-to-brian-neurons.ipynb
+    .. _launchbinder1introtobrianneurons: https://mybinder.org/v2/gh/brian-team/brian2-binder/master?filepath=tutorials/1-intro-to-brian-neurons.ipynb
         
     .. |launchbinder2introtobriansynapses| image:: http://mybinder.org/badge.svg
-    .. _launchbinder2introtobriansynapses: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/2-intro-to-brian-synapses.ipynb
+    .. _launchbinder2introtobriansynapses: https://mybinder.org/v2/gh/brian-team/brian2-binder/master?filepath=tutorials/2-intro-to-brian-synapses.ipynb
         
     .. |launchbinder3introtobriansimulations| image:: http://mybinder.org/badge.svg
-    .. _launchbinder3introtobriansimulations: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/3-intro-to-brian-simulations.ipynb
+    .. _launchbinder3introtobriansimulations: https://mybinder.org/v2/gh/brian-team/brian2-binder/master?filepath=tutorials/3-intro-to-brian-simulations.ipynb
     
     * |launchbinder1introtobrianneurons|_ :download:`Introduction to Brian part 1: Neurons <1-intro-to-brian-neurons.ipynb>`
     * |launchbinder2introtobriansynapses|_ :download:`Introduction to Brian part 2: Synapses <2-intro-to-brian-synapses.ipynb>`

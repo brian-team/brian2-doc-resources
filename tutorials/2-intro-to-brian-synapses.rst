@@ -1,4 +1,3 @@
-
 Introduction to Brian part 2: Synapses
 ======================================
 
@@ -6,7 +5,7 @@ Introduction to Brian part 2: Synapses
 .. only:: html
 
     .. |launchbinder| image:: http://mybinder.org/badge.svg
-    .. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/2-intro-to-brian-synapses.ipynb
+    .. _launchbinder: https://mybinder.org/v2/gh/brian-team/brian2-binder/master?filepath=tutorials/2-intro-to-brian-synapses.ipynb
 
     .. note::
        This tutorial is a static non-editable version. You can launch an
@@ -21,7 +20,7 @@ Introduction to Brian part 2: Synapses
 
 
 
-If you haven't yet read part 1: Neurons, go read that now.
+If you haven’t yet read part 1: Neurons, go read that now.
 
 As before we start by importing the Brian package and setting up
 matplotlib for IPython:
@@ -31,11 +30,84 @@ matplotlib for IPython:
     from brian2 import *
     %matplotlib inline
 
+
+.. parsed-literal::
+
+    /mnt/data/anaconda2/lib/python2.7/site-packages/pkg_resources/py2_warn.py:19: UserWarning: ************************************************************
+    You are running Setuptools on Python 2, which is no longer
+    supported and
+    >>> SETUPTOOLS WILL STOP WORKING <<<
+    in a subsequent release. Please ensure you are installing
+    Setuptools using pip 9.x or later or pin to `setuptools<45`
+    in your environment.
+    If you have done those things and are still encountering
+    this message, please comment in
+    https://github.com/pypa/setuptools/issues/1458
+    about the steps that led to this unsupported combination.
+    ************************************************************
+      sys.version_info < (3,) and warnings.warn("*" * 60 + msg + "*" * 60)
+
+
+::
+
+
+    
+
+    ImportErrorTraceback (most recent call last)
+
+    <ipython-input-1-134bbfbc4749> in <module>()
+    ----> 1 from brian2 import *
+          2 get_ipython().magic(u'matplotlib inline')
+
+
+    /home/marcel/programming/brian2/brian2/__init__.py in <module>()
+         64 __release_date__ = '2019-12-20'
+         65 
+    ---> 66 from brian2.only import *
+         67 from brian2.only import test
+         68 
+
+
+    /home/marcel/programming/brian2/brian2/only.py in <module>()
+         13 
+         14 from brian2.units import *
+    ---> 15 from brian2.utils import *
+         16 from brian2.core.tracking import *
+         17 from brian2.core.names import *
+
+
+    /home/marcel/programming/brian2/brian2/utils/__init__.py in <module>()
+          3 '''
+          4 
+    ----> 5 from .logger import *
+          6 
+          7 __all__ = ['get_logger', 'BrianLogger', 'std_silent']
+
+
+    /home/marcel/programming/brian2/brian2/utils/logger.py in <module>()
+         24 
+         25 import brian2
+    ---> 26 from brian2.core.preferences import prefs, BrianPreference
+         27 
+         28 from .environment import running_from_ipython
+
+
+    /home/marcel/programming/brian2/brian2/core/preferences.py in <module>()
+          6 import re
+          7 import os
+    ----> 8 from collections.abc import MutableMapping
+          9 from io import BytesIO
+         10 
+
+
+    ImportError: No module named abc
+
+
 The simplest Synapse
 --------------------
 
 Once you have some neurons, the next step is to connect them up via
-synapses. We'll start out with doing the simplest possible type of
+synapses. We’ll start out with doing the simplest possible type of
 synapse that causes an instantaneous change in a variable after a spike.
 
 .. code:: ipython2
@@ -66,17 +138,31 @@ synapse that causes an instantaneous change in a variable after a spike.
     legend();
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_5_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-2-b88b196b5381> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 eqs = '''
+          4 dv/dt = (I-v)/tau : 1
+          5 I : 1
 
 
-There are a few things going on here. First of all, let's recap what is
-going on with the ``NeuronGroup``. We've created two neurons, each of
+    NameError: name 'start_scope' is not defined
+
+
+There are a few things going on here. First of all, let’s recap what is
+going on with the ``NeuronGroup``. We’ve created two neurons, each of
 which has the same differential equation but different values for
 parameters I and tau. Neuron 0 has ``I=2`` and ``tau=10*ms`` which means
 that is driven to repeatedly spike at a fairly high rate. Neuron 1 has
 ``I=0`` and ``tau=100*ms`` which means that on its own - without the
-synapses - it won't spike at all (the driving current I is 0). You can
+synapses - it won’t spike at all (the driving current I is 0). You can
 prove this to yourself by commenting out the two lines that define the
 synapse.
 
@@ -93,7 +179,7 @@ fires a spike the target neuron will have its value of ``v`` increased
 by 0.2.
 
 However, at this point we have only defined the synapse model, we
-haven't actually created any synapses. The next line
+haven’t actually created any synapses. The next line
 ``S.connect(i=0, j=1)`` creates a synapse from neuron 0 to neuron 1.
 
 Adding a weight
@@ -133,18 +219,32 @@ different synapses. We do that by introducing synapse equations.
     legend();
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_8_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-3-3ae6ad76b216> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 eqs = '''
+          4 dv/dt = (I-v)/tau : 1
+          5 I : 1
+
+
+    NameError: name 'start_scope' is not defined
 
 
 This example behaves very similarly to the previous example, but now
-there's a synaptic weight variable ``w``. The string ``'w : 1'`` is an
+there’s a synaptic weight variable ``w``. The string ``'w : 1'`` is an
 equation string, precisely the same as for neurons, that defines a
 single dimensionless parameter ``w``. We changed the behaviour on a
 spike to ``on_pre='v_post += w'`` now, so that each synapse can behave
-differently depending on the value of ``w``. To illustrate this, we've
+differently depending on the value of ``w``. To illustrate this, we’ve
 made a third neuron which behaves precisely the same as the second
-neuron, and connected neuron 0 to both neurons 1 and 2. We've also set
+neuron, and connected neuron 0 to both neurons 1 and 2. We’ve also set
 the weights via ``S.w = 'j*0.2'``. When ``i`` and ``j`` occur in the
 context of synapses, ``i`` refers to the source neuron index, and ``j``
 to the target neuron index. So this will give a synaptic connection from
@@ -187,11 +287,25 @@ act with a certain delay.
     legend();
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_11_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-4-e34268c7c4d7> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 eqs = '''
+          4 dv/dt = (I-v)/tau : 1
+          5 I : 1
 
 
-As you can see, that's as simple as adding a line ``S.delay = 'j*2*ms'``
+    NameError: name 'start_scope' is not defined
+
+
+As you can see, that’s as simple as adding a line ``S.delay = 'j*2*ms'``
 so that the synapse from 0 to 1 has a delay of 2 ms, and from 0 to 2 has
 a delay of 4 ms.
 
@@ -199,7 +313,7 @@ More complex connectivity
 -------------------------
 
 So far, we specified the synaptic connectivity explicitly, but for
-larger networks this isn't usually possible. For that, we usually want
+larger networks this isn’t usually possible. For that, we usually want
 to specify some condition.
 
 .. code:: ipython2
@@ -211,12 +325,31 @@ to specify some condition.
     S = Synapses(G, G)
     S.connect(condition='i!=j', p=0.2)
 
-Here we've created a dummy neuron group of N neurons and a dummy
-synapses model that doens't actually do anything just to demonstrate the
+
+::
+
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-5-b45d4eeaecb5> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 N = 10
+          4 G = NeuronGroup(N, 'v:1')
+          5 S = Synapses(G, G)
+
+
+    NameError: name 'start_scope' is not defined
+
+
+Here we’ve created a dummy neuron group of N neurons and a dummy
+synapses model that doens’t actually do anything just to demonstrate the
 connectivity. The line ``S.connect(condition='i!=j', p=0.2)`` will
 connect all pairs of neurons ``i`` and ``j`` with probability 0.2 as
 long as the condition ``i!=j`` holds. So, how can we see that
-connectivity? Here's a little function that will let us visualise it.
+connectivity? Here’s a little function that will let us visualise it.
 
 .. code:: ipython2
 
@@ -243,8 +376,20 @@ connectivity? Here's a little function that will let us visualise it.
     visualise_connectivity(S)
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_16_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-6-bc6eb6eb2091> in <module>()
+         19     ylabel('Target neuron index')
+         20 
+    ---> 21 visualise_connectivity(S)
+    
+
+    NameError: name 'S' is not defined
 
 
 There are two plots here. On the left hand side, you see a vertical line
@@ -254,7 +399,7 @@ that have a synapse. On the right hand side is another way of
 visualising the same thing. Here each black dot is a synapse, with x
 value the source neuron index, and y value the target neuron index.
 
-Let's see how these figures change as we change the probability of a
+Let’s see how these figures change as we change the probability of a
 connection:
 
 .. code:: ipython2
@@ -271,19 +416,25 @@ connection:
         suptitle('p = '+str(p))
 
 
-
-.. image:: 2-intro-to-brian-synapses_image_18_0.png
-
+::
 
 
-.. image:: 2-intro-to-brian-synapses_image_18_1.png
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-7-3662f798e15c> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 N = 10
+          4 G = NeuronGroup(N, 'v:1')
+          5 
 
 
+    NameError: name 'start_scope' is not defined
 
-.. image:: 2-intro-to-brian-synapses_image_18_2.png
 
-
-And let's see what another connectivity condition looks like. This one
+And let’s see what another connectivity condition looks like. This one
 will only connect neighbouring neurons.
 
 .. code:: ipython2
@@ -298,18 +449,32 @@ will only connect neighbouring neurons.
     visualise_connectivity(S)
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_20_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-8-0c1882186f53> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 N = 10
+          4 G = NeuronGroup(N, 'v:1')
+          5 
+
+
+    NameError: name 'start_scope' is not defined
 
 
 Try using that cell to see how other connectivity conditions look like.
 
 You can also use the generator syntax to create connections like this
-more efficiently. In small examples like this, it doesn't matter, but
+more efficiently. In small examples like this, it doesn’t matter, but
 for large numbers of neurons it can be much more efficient to specify
 directly which neurons should be connected than to specify just a
 condition. Note that the following example uses ``skip_if_invalid`` to
-avoid errors at the boundaries (e.g. do not try to connect the neuron
+avoid errors at the boundaries (e.g. do not try to connect the neuron
 with index 1 to a neuron with index -2).
 
 .. code:: ipython2
@@ -324,8 +489,22 @@ with index 1 to a neuron with index -2).
     visualise_connectivity(S)
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_23_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-9-579547d16964> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 N = 10
+          4 G = NeuronGroup(N, 'v:1')
+          5 
+
+
+    NameError: name 'start_scope' is not defined
 
 
 If each source neuron is connected to precisely one target neuron (which
@@ -346,12 +525,26 @@ connectivity looks like this:
     visualise_connectivity(S)
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_25_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-10-98a26214bc11> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 N = 10
+          4 G = NeuronGroup(N, 'v:1')
+          5 
+
+
+    NameError: name 'start_scope' is not defined
 
 
 You can also do things like specifying the value of weights with a
-string. Let's see an example where we assign each neuron a spatial
+string. Let’s see an example where we assign each neuron a spatial
 location and have a distance-dependent connectivity function. We
 visualise the weight of a synapse by the size of the marker.
 
@@ -378,8 +571,22 @@ visualise the weight of a synapse by the size of the marker.
     ylabel('Target neuron position (um)');
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_27_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-11-dd18f6c79553> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 N = 30
+          4 neuron_spacing = 50*umetre
+          5 width = N/4.0*neuron_spacing
+
+
+    NameError: name 'start_scope' is not defined
 
 
 Now try changing that function and seeing how the plot changes.
@@ -387,9 +594,9 @@ Now try changing that function and seeing how the plot changes.
 More complex synapse models: STDP
 ---------------------------------
 
-Brian's synapse framework is very general and can do things like
+Brian’s synapse framework is very general and can do things like
 short-term plasticity (STP) or spike-timing dependent plasticity (STDP).
-Let's see how that works for STDP.
+Let’s see how that works for STDP.
 
 STDP is normally defined by an equation something like this:
 
@@ -422,8 +629,22 @@ This function looks like this:
     axhline(0, ls='-', c='k');
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_29_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-12-959e9b4ad9f6> in <module>()
+    ----> 1 tau_pre = tau_post = 20*ms
+          2 A_pre = 0.01
+          3 A_post = -A_pre*1.05
+          4 delta_t = linspace(-50, 50, 100)*ms
+          5 W = where(delta_t>0, A_pre*exp(-delta_t/tau_pre), A_post*exp(delta_t/tau_post))
+
+
+    NameError: name 'ms' is not defined
 
 
 Simulating it directly using this equation though would be very
@@ -433,7 +654,7 @@ remember all its previous spike times. It turns out there is a more
 efficient and physiologically more plausible way to get the same effect.
 
 We define two new variables :math:`a_{pre}` and :math:`a_{post}` which
-are "traces" of pre- and post-synaptic activity, governed by the
+are “traces” of pre- and post-synaptic activity, governed by the
 differential equations:
 
 .. math::
@@ -500,30 +721,49 @@ equations and spike events, we can turn that into Brian code.
                  w = clip(w+apre, 0, wmax)
                  ''')
 
+
+::
+
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-13-624e21198361> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 taupre = taupost = 20*ms
+          4 wmax = 0.01
+          5 Apre = 0.01
+
+
+    NameError: name 'start_scope' is not defined
+
+
 There are a few things to see there. Firstly, when defining the synapses
-we've given a more complicated multi-line string defining three synaptic
-variables (``w``, ``apre`` and ``apost``). We've also got a new bit of
+we’ve given a more complicated multi-line string defining three synaptic
+variables (``w``, ``apre`` and ``apost``). We’ve also got a new bit of
 syntax there, ``(event-driven)`` after the definitions of ``apre`` and
 ``apost``. What this means is that although these two variables evolve
 continuously over time, Brian should only update them at the time of an
-event (a spike). This is because we don't need the values of ``apre``
+event (a spike). This is because we don’t need the values of ``apre``
 and ``apost`` except at spike times, and it is more efficient to only
 update them when needed.
 
 Next we have a ``on_pre=...`` argument. The first line is
 ``v_post += w``: this is the line that actually applies the synaptic
 weight to the target neuron. The second line is ``apre += Apre`` which
-encodes the rule above. In the third line, we're also encoding the rule
-above but we've added one extra feature: we've clamped the synaptic
+encodes the rule above. In the third line, we’re also encoding the rule
+above but we’ve added one extra feature: we’ve clamped the synaptic
 weights between a minimum of 0 and a maximum of ``wmax`` so that the
-weights can't get too large or negative. The function
+weights can’t get too large or negative. The function
 ``clip(x, low, high)`` does this.
 
 Finally, we have a ``on_post=...`` argument. This gives the statements
 to calculate when a post-synaptic neuron fires. Note that we do not
 modify ``v`` in this case, only the synaptic variables.
 
-Now let's see how all the variables behave when a presynaptic spike
+Now let’s see how all the variables behave when a presynaptic spike
 arrives some time before a postsynaptic spike.
 
 .. code:: ipython2
@@ -568,21 +808,35 @@ arrives some time before a postsynaptic spike.
     xlabel('Time (ms)');
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_33_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-14-58c4508267f6> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 taupre = taupost = 20*ms
+          4 wmax = 0.01
+          5 Apre = 0.01
 
 
-A couple of things to note here. First of all, we've used a trick to
+    NameError: name 'start_scope' is not defined
+
+
+A couple of things to note here. First of all, we’ve used a trick to
 make neuron 0 fire a spike at time 10 ms, and neuron 1 at time 20 ms.
 Can you see how that works?
 
-Secondly, we've replaced the ``(event-driven)`` by ``(clock-driven)`` so
+Secondly, we’ve replaced the ``(event-driven)`` by ``(clock-driven)`` so
 you can see how ``apre`` and ``apost`` evolve over time. Try reverting
 this change and see what happens.
 
 Try changing the times of the spikes to see what happens.
 
-Finally, let's verify that this formulation is equivalent to the
+Finally, let’s verify that this formulation is equivalent to the
 original one.
 
 .. code:: ipython2
@@ -627,8 +881,22 @@ original one.
     axhline(0, ls='-', c='k');
 
 
+::
 
-.. image:: 2-intro-to-brian-synapses_image_35_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-15-bb960fc41ba1> in <module>()
+    ----> 1 start_scope()
+          2 
+          3 taupre = taupost = 20*ms
+          4 Apre = 0.01
+          5 Apost = -Apre*taupre/taupost*1.05
+
+
+    NameError: name 'start_scope' is not defined
 
 
 Can you see how this works?

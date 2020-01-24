@@ -1,4 +1,3 @@
-
 Introduction to Brian part 3: Simulations
 =========================================
 
@@ -6,7 +5,7 @@ If you haven’t yet read parts 1 and 2 on Neurons and Synapses, go read
 them first.
 
 This tutorial is about managing the slightly more complicated tasks that
-crop up in research problems, rather than the toy examples we've been
+crop up in research problems, rather than the toy examples we’ve been
 looking at so far. So we cover things like inputting sensory data,
 modelling experimental conditions, etc.
 
@@ -17,7 +16,7 @@ matplotlib for IPython:
 .. only:: html
 
     .. |launchbinder| image:: http://mybinder.org/badge.svg
-    .. _launchbinder: http://mybinder.org:/repo/brian-team/brian2-binder/notebooks/tutorials/3-intro-to-brian-simulations.ipynb
+    .. _launchbinder: https://mybinder.org/v2/gh/brian-team/brian2-binder/master?filepath=tutorials/3-intro-to-brian-simulations.ipynb
 
     .. note::
        This tutorial is a static non-editable version. You can launch an
@@ -37,14 +36,87 @@ matplotlib for IPython:
     from brian2 import *
     %matplotlib inline
 
+
+.. parsed-literal::
+
+    /mnt/data/anaconda2/lib/python2.7/site-packages/pkg_resources/py2_warn.py:19: UserWarning: ************************************************************
+    You are running Setuptools on Python 2, which is no longer
+    supported and
+    >>> SETUPTOOLS WILL STOP WORKING <<<
+    in a subsequent release. Please ensure you are installing
+    Setuptools using pip 9.x or later or pin to `setuptools<45`
+    in your environment.
+    If you have done those things and are still encountering
+    this message, please comment in
+    https://github.com/pypa/setuptools/issues/1458
+    about the steps that led to this unsupported combination.
+    ************************************************************
+      sys.version_info < (3,) and warnings.warn("*" * 60 + msg + "*" * 60)
+
+
+::
+
+
+    
+
+    ImportErrorTraceback (most recent call last)
+
+    <ipython-input-1-134bbfbc4749> in <module>()
+    ----> 1 from brian2 import *
+          2 get_ipython().magic(u'matplotlib inline')
+
+
+    /home/marcel/programming/brian2/brian2/__init__.py in <module>()
+         64 __release_date__ = '2019-12-20'
+         65 
+    ---> 66 from brian2.only import *
+         67 from brian2.only import test
+         68 
+
+
+    /home/marcel/programming/brian2/brian2/only.py in <module>()
+         13 
+         14 from brian2.units import *
+    ---> 15 from brian2.utils import *
+         16 from brian2.core.tracking import *
+         17 from brian2.core.names import *
+
+
+    /home/marcel/programming/brian2/brian2/utils/__init__.py in <module>()
+          3 '''
+          4 
+    ----> 5 from .logger import *
+          6 
+          7 __all__ = ['get_logger', 'BrianLogger', 'std_silent']
+
+
+    /home/marcel/programming/brian2/brian2/utils/logger.py in <module>()
+         24 
+         25 import brian2
+    ---> 26 from brian2.core.preferences import prefs, BrianPreference
+         27 
+         28 from .environment import running_from_ipython
+
+
+    /home/marcel/programming/brian2/brian2/core/preferences.py in <module>()
+          6 import re
+          7 import os
+    ----> 8 from collections.abc import MutableMapping
+          9 from io import BytesIO
+         10 
+
+
+    ImportError: No module named abc
+
+
 Multiple runs
 -------------
 
-Let's start by looking at a very common task: doing multiple runs of a
-simulation with some parameter that changes. Let's start off with
+Let’s start by looking at a very common task: doing multiple runs of a
+simulation with some parameter that changes. Let’s start off with
 something very simple, how does the firing rate of a leaky
 integrate-and-fire neuron driven by Poisson spiking neurons change
-depending on its membrane time constant? Let's set that up.
+depending on its membrane time constant? Let’s set that up.
 
 .. code:: ipython2
 
@@ -78,12 +150,26 @@ depending on its membrane time constant? Let's set that up.
     ylabel('Firing rate (sp/s)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_4_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-2-f5ee0225010b> in <module>()
+          1 # remember, this is here for running separate simulations in the same notebook
+    ----> 2 start_scope()
+          3 # Parameters
+          4 num_inputs = 100
+          5 input_rate = 10*Hz
 
 
-Now if you're running the notebook, you'll see that this was a little
-slow to run. The reason is that for each loop, you're recreating the
+    NameError: name 'start_scope' is not defined
+
+
+Now if you’re running the notebook, you’ll see that this was a little
+slow to run. The reason is that for each loop, you’re recreating the
 objects from scratch. We can improve that by setting up the network just
 once. We store a copy of the state of the network before the loop, and
 restore it at the beginning of each iteration.
@@ -118,18 +204,32 @@ restore it at the beginning of each iteration.
     ylabel('Firing rate (sp/s)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_6_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-3-8bac1b281c54> in <module>()
+    ----> 1 start_scope()
+          2 num_inputs = 100
+          3 input_rate = 10*Hz
+          4 weight = 0.1
+          5 tau_range = linspace(1, 10, 30)*ms
 
 
-That's a very simple example of using store and restore, but you can use
+    NameError: name 'start_scope' is not defined
+
+
+That’s a very simple example of using store and restore, but you can use
 it in much more complicated situations. For example, you might want to
 run a long training run, and then run multiple test runs afterwards.
 Simply put a store after the long training run, and a restore before
 each testing run.
 
-You can also see that the output curve is very noisy and doesn't
-increase monotonically like we'd expect. The noise is coming from the
+You can also see that the output curve is very noisy and doesn’t
+increase monotonically like we’d expect. The noise is coming from the
 fact that we run the Poisson group afresh each time. If we only wanted
 to see the effect of the time constant, we could make sure that the
 spikes were the same each time (although note that really, you ought to
@@ -180,13 +280,27 @@ time.
     ylabel('Firing rate (sp/s)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_8_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-4-9e358aff7d80> in <module>()
+    ----> 1 start_scope()
+          2 num_inputs = 100
+          3 input_rate = 10*Hz
+          4 weight = 0.1
+          5 tau_range = linspace(1, 10, 30)*ms
+
+
+    NameError: name 'start_scope' is not defined
 
 
 You can see that now there is much less noise and it increases
 monotonically because the input spikes are the same each time, meaning
-we're seeing the effect of the time constant, not the random spikes.
+we’re seeing the effect of the time constant, not the random spikes.
 
 Note that in the code above, we created ``Network`` objects. The reason
 is that in the loop, if we just called ``run`` it would try to simulate
@@ -194,9 +308,9 @@ all the objects, including the Poisson neurons ``P``, and we only want
 to run that once. We use ``Network`` to specify explicitly which objects
 we want to include.
 
-The techniques we've looked at so far are the conceptually most simple
+The techniques we’ve looked at so far are the conceptually most simple
 way to do multiple runs, but not always the most efficient. Since
-there's only a single output neuron in the model above, we can simply
+there’s only a single output neuron in the model above, we can simply
 duplicate that output neuron and make the time constant a parameter of
 the group.
 
@@ -228,20 +342,29 @@ the group.
     ylabel('Firing rate (sp/s)');
 
 
-.. parsed-literal::
-
-    WARNING    "tau" is an internal variable of group "neurongroup_2", but also exists in the run namespace with the value 10. * msecond. The internal variable will be used. [brian2.groups.group.Group.resolve.resolution_conflict]
+::
 
 
+    
 
-.. image:: 3-intro-to-brian-simulations_image_10_1.png
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-5-9a13f0819f8e> in <module>()
+    ----> 1 start_scope()
+          2 num_inputs = 100
+          3 input_rate = 10*Hz
+          4 weight = 0.1
+          5 tau_range = linspace(1, 10, 30)*ms
 
 
-You can see that this is much faster again! It's a little bit more
-complicated conceptually, and it's not always possible to do this trick,
-but it can be much more efficient if it's possible.
+    NameError: name 'start_scope' is not defined
 
-Let's finish with this example by having a quick look at how the mean
+
+You can see that this is much faster again! It’s a little bit more
+complicated conceptually, and it’s not always possible to do this trick,
+but it can be much more efficient if it’s possible.
+
+Let’s finish with this example by having a quick look at how the mean
 and standard deviation of the interspike intervals depends on the time
 constant.
 
@@ -260,8 +383,22 @@ constant.
     ylabel('Interspike interval (ms)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_12_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-6-08eb865dc3e8> in <module>()
+    ----> 1 trains = M.spike_trains()
+          2 isi_mu = full(num_tau, nan)*second
+          3 isi_std = full(num_tau, nan)*second
+          4 for idx in range(num_tau):
+          5     train = diff(trains[idx])
+
+
+    NameError: name 'M' is not defined
 
 
 Notice that we used the ``spike_trains()`` method of ``SpikeMonitor``.
@@ -272,7 +409,7 @@ Changing things during a run
 ----------------------------
 
 Imagine an experiment where you inject current into a neuron, and change
-the amplitude randomly every 10 ms. Let's see if we can model that using
+the amplitude randomly every 10 ms. Let’s see if we can model that using
 a Hodgkin-Huxley type neuron.
 
 .. code:: ipython2
@@ -318,15 +455,29 @@ a Hodgkin-Huxley type neuron.
     ylabel('v (mV)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_14_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-7-115442807167> in <module>()
+    ----> 1 start_scope()
+          2 # Parameters
+          3 area = 20000*umetre**2
+          4 Cm = 1*ufarad*cm**-2 * area
+          5 gl = 5e-5*siemens*cm**-2 * area
+
+
+    NameError: name 'start_scope' is not defined
 
 
 In the code above, we used a loop over multiple runs to achieve this.
-That's fine, but it's not the most efficient way to do it because each
+That’s fine, but it’s not the most efficient way to do it because each
 time we call ``run`` we have to do a lot of initialisation work that
-slows everything down. It also won't work as well with the more
-efficient standalone mode of Brian. Here's another way.
+slows everything down. It also won’t work as well with the more
+efficient standalone mode of Brian. Here’s another way.
 
 .. code:: ipython2
 
@@ -352,16 +503,30 @@ efficient standalone mode of Brian. Here's another way.
     ylabel('v (mV)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_16_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-8-d53e5a9ab65d> in <module>()
+    ----> 1 start_scope()
+          2 group = NeuronGroup(1, eqs_HH,
+          3                     threshold='v > -40*mV',
+          4                     refractory='v > -40*mV',
+          5                     method='exponential_euler')
 
 
-We've replaced the loop that had multiple ``run`` calls with a
+    NameError: name 'start_scope' is not defined
+
+
+We’ve replaced the loop that had multiple ``run`` calls with a
 ``run_regularly``. This makes the specified block of code run every
 ``dt=10*ms``. The ``run_regularly`` lets you run code specific to a
 single ``NeuronGroup``, but sometimes you might need more flexibility.
 For this, you can use ``network_operation`` which lets you run arbitrary
-Python code (but won't work with the standalone mode).
+Python code (but won’t work with the standalone mode).
 
 .. code:: ipython2
 
@@ -388,11 +553,25 @@ Python code (but won't work with the standalone mode).
     ylabel('v (mV)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_18_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-9-2ac2b1a918e6> in <module>()
+    ----> 1 start_scope()
+          2 group = NeuronGroup(1, eqs_HH,
+          3                     threshold='v > -40*mV',
+          4                     refractory='v > -40*mV',
+          5                     method='exponential_euler')
 
 
-Now let's extend this example to run on multiple neurons, each with a
+    NameError: name 'start_scope' is not defined
+
+
+Now let’s extend this example to run on multiple neurons, each with a
 different capacitance to see how that affects the behaviour of the cell.
 
 .. code:: ipython2
@@ -430,12 +609,26 @@ different capacitance to see how that affects the behaviour of the cell.
     ylabel('v (mV)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_20_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-10-662009fbf704> in <module>()
+    ----> 1 start_scope()
+          2 N = 3
+          3 eqs_HH_2 = '''
+          4 dv/dt = (gl*(El-v) - g_na*(m*m*m)*h*(v-ENa) - g_kd*(n*n*n*n)*(v-EK) + I)/C : volt
+          5 dm/dt = 0.32*(mV**-1)*(13.*mV-v+VT)/
+
+
+    NameError: name 'start_scope' is not defined
 
 
 So that runs, but something looks wrong! The injected currents look like
-they're different for all the different neurons! Let's check:
+they’re different for all the different neurons! Let’s check:
 
 .. code:: ipython2
 
@@ -444,11 +637,23 @@ they're different for all the different neurons! Let's check:
     ylabel('I (nA)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_22_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-11-e6609e017c9f> in <module>()
+    ----> 1 plot(statemon.t/ms, statemon.I.T/nA, '-')
+          2 xlabel('Time (ms)')
+          3 ylabel('I (nA)');
 
 
-Sure enough, it's different each time. But why? We wrote
+    NameError: name 'plot' is not defined
+
+
+Sure enough, it’s different each time. But why? We wrote
 ``group.run_regularly('I = rand()*50*nA', dt=10*ms)`` which seems like
 it should give the same value of I for each neuron. But, like threshold
 and reset statements, ``run_regularly`` code is interpreted as being run
@@ -489,16 +694,30 @@ variable, meaning it has the same value for each neuron.
     ylabel('v (mV)');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_24_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-12-67b02ed04511> in <module>()
+    ----> 1 start_scope()
+          2 N = 3
+          3 eqs_HH_3 = '''
+          4 dv/dt = (gl*(El-v) - g_na*(m*m*m)*h*(v-ENa) - g_kd*(n*n*n*n)*(v-EK) + I)/C : volt
+          5 dm/dt = 0.32*(mV**-1)*(13.*mV-v+VT)/
 
 
-Ahh, that's more like it!
+    NameError: name 'start_scope' is not defined
+
+
+Ahh, that’s more like it!
 
 Adding input
 ------------
 
-Now let's think about a neuron being driven by a sinusoidal input. Let's
+Now let’s think about a neuron being driven by a sinusoidal input. Let’s
 go back to a leaky integrate-and-fire to simplify the equations a bit.
 
 .. code:: ipython2
@@ -521,13 +740,27 @@ go back to a leaky integrate-and-fire to simplify the equations a bit.
     legend(loc='best');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_26_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-13-53f475ca6212> in <module>()
+    ----> 1 start_scope()
+          2 A = 2.5
+          3 f = 10*Hz
+          4 tau = 5*ms
+          5 eqs = '''
+
+
+    NameError: name 'start_scope' is not defined
 
 
 So far, so good and the sort of thing we saw in the first tutorial. Now,
 what if that input current were something we had recorded and saved in a
-file? In that case, we can use ``TimedArray``. Let's start by
+file? In that case, we can use ``TimedArray``. Let’s start by
 reproducing the picture above but using ``TimedArray``.
 
 .. code:: ipython2
@@ -553,22 +786,36 @@ reproducing the picture above but using ``TimedArray``.
     legend(loc='best');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_28_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-14-5970215b35a9> in <module>()
+    ----> 1 start_scope()
+          2 A = 2.5
+          3 f = 10*Hz
+          4 tau = 5*ms
+          5 # Create a TimedArray and set the equations to use it
+
+
+    NameError: name 'start_scope' is not defined
 
 
 Note that for the example where we put the ``sin`` function directly in
 the equations, we had to use the ``method='euler'`` argument because the
-exact integrator wouldn't work here (try it!). However, ``TimedArray``
+exact integrator wouldn’t work here (try it!). However, ``TimedArray``
 is considered to be constant over its time step and so the linear
-integrator can be used. This means you won't get the same behaviour from
+integrator can be used. This means you won’t get the same behaviour from
 these two methods for two reasons. Firstly, the numerical integration
 methods ``exact`` and ``euler`` give slightly different results.
 Secondly, ``sin`` is not constant over a timestep whereas ``TimedArray``
 is.
 
-Now just to show that ``TimedArray`` works for arbitrary currents, let's
-make a weird "recorded" current and run it on that.
+Now just to show that ``TimedArray`` works for arbitrary currents, let’s
+make a weird “recorded” current and run it on that.
 
 .. code:: ipython2
 
@@ -598,11 +845,25 @@ make a weird "recorded" current and run it on that.
     legend(loc='best');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_30_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-15-8f1d49b7ec87> in <module>()
+    ----> 1 start_scope()
+          2 A = 2.5
+          3 f = 10*Hz
+          4 tau = 5*ms
+          5 # Let's create an array that couldn't be
 
 
-Finally, let's finish on an example that actually reads in some data
+    NameError: name 'start_scope' is not defined
+
+
+Finally, let’s finish on an example that actually reads in some data
 from a file. See if you can work out how this example works.
 
 .. code:: ipython2
@@ -627,6 +888,20 @@ from a file. See if you can work out how this example works.
     ylabel('Neuron index');
 
 
+::
 
-.. image:: 3-intro-to-brian-simulations_image_32_0.png
+
+    
+
+    NameErrorTraceback (most recent call last)
+
+    <ipython-input-16-1f097ed8590d> in <module>()
+    ----> 1 start_scope()
+          2 from matplotlib.image import imread
+          3 img = (1-imread('brian.png'))[::-1, :, 0].T
+          4 num_samples, N = img.shape
+          5 ta = TimedArray(img, dt=1*ms) # 228
+
+
+    NameError: name 'start_scope' is not defined
 
