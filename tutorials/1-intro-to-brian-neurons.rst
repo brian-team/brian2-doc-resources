@@ -24,86 +24,14 @@ All Brian scripts start with the following. If you’re trying this
 notebook out in the Jupyter notebook, you should start by running this
 cell.
 
-.. code:: ipython2
+.. code:: ipython3
 
     from brian2 import *
-
-
-.. parsed-literal::
-
-    /mnt/data/anaconda2/lib/python2.7/site-packages/pkg_resources/py2_warn.py:19: UserWarning: ************************************************************
-    You are running Setuptools on Python 2, which is no longer
-    supported and
-    >>> SETUPTOOLS WILL STOP WORKING <<<
-    in a subsequent release. Please ensure you are installing
-    Setuptools using pip 9.x or later or pin to `setuptools<45`
-    in your environment.
-    If you have done those things and are still encountering
-    this message, please comment in
-    https://github.com/pypa/setuptools/issues/1458
-    about the steps that led to this unsupported combination.
-    ************************************************************
-      sys.version_info < (3,) and warnings.warn("*" * 60 + msg + "*" * 60)
-
-
-::
-
-
-    
-
-    ImportErrorTraceback (most recent call last)
-
-    <ipython-input-1-0662cb4848fc> in <module>()
-    ----> 1 from brian2 import *
-    
-
-    /home/marcel/programming/brian2/brian2/__init__.py in <module>()
-         64 __release_date__ = '2019-12-20'
-         65 
-    ---> 66 from brian2.only import *
-         67 from brian2.only import test
-         68 
-
-
-    /home/marcel/programming/brian2/brian2/only.py in <module>()
-         13 
-         14 from brian2.units import *
-    ---> 15 from brian2.utils import *
-         16 from brian2.core.tracking import *
-         17 from brian2.core.names import *
-
-
-    /home/marcel/programming/brian2/brian2/utils/__init__.py in <module>()
-          3 '''
-          4 
-    ----> 5 from .logger import *
-          6 
-          7 __all__ = ['get_logger', 'BrianLogger', 'std_silent']
-
-
-    /home/marcel/programming/brian2/brian2/utils/logger.py in <module>()
-         24 
-         25 import brian2
-    ---> 26 from brian2.core.preferences import prefs, BrianPreference
-         27 
-         28 from .environment import running_from_ipython
-
-
-    /home/marcel/programming/brian2/brian2/core/preferences.py in <module>()
-          6 import re
-          7 import os
-    ----> 8 from collections.abc import MutableMapping
-          9 from io import BytesIO
-         10 
-
-
-    ImportError: No module named abc
-
 
 Later we’ll do some plotting in the notebook, so we activate inline
 plotting in the notebook by doing this:
 
-.. code:: ipython2
+.. code:: ipython3
 
     %matplotlib inline
 
@@ -118,111 +46,81 @@ Units system
 
 Brian has a system for using quantities with physical dimensions:
 
-.. code:: ipython2
+.. code:: ipython3
 
     20*volt
 
 
-::
 
 
-    
+.. math::
 
-    NameErrorTraceback (most recent call last)
+    20.0\,\mathrm{V}
 
-    <ipython-input-3-cd04fc03abe9> in <module>()
-    ----> 1 20*volt
-    
-
-    NameError: name 'volt' is not defined
 
 
 All of the basic SI units can be used (volt, amp, etc.) along with all
 the standard prefixes (m=milli, p=pico, etc.), as well as a few special
 abbreviations like ``mV`` for millivolt, ``pF`` for picofarad, etc.
 
-.. code:: ipython2
+.. code:: ipython3
 
     1000*amp
 
 
-::
 
 
-    
+.. math::
 
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-4-1fbbf0aee6aa> in <module>()
-    ----> 1 1000*amp
-    
-
-    NameError: name 'amp' is not defined
+    1.0\,\mathrm{k}\,\mathrm{A}
 
 
-.. code:: ipython2
+
+.. code:: ipython3
 
     1e6*volt
 
 
-::
 
 
-    
+.. math::
 
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-5-b9f47fe99cdc> in <module>()
-    ----> 1 1e6*volt
-    
-
-    NameError: name 'volt' is not defined
+    1.0\,\mathrm{M}\,\mathrm{V}
 
 
-.. code:: ipython2
+
+.. code:: ipython3
 
     1000*namp
 
 
-::
 
 
-    
+.. math::
 
-    NameErrorTraceback (most recent call last)
+    1.0000000000000002\,\mathrm{\mu}\,\mathrm{A}
 
-    <ipython-input-6-39a48d6121d2> in <module>()
-    ----> 1 1000*namp
-    
-
-    NameError: name 'namp' is not defined
 
 
 Also note that combinations of units with work as expected:
 
-.. code:: ipython2
+.. code:: ipython3
 
     10*nA*5*Mohm
 
 
-::
 
 
-    
+.. math::
 
-    NameErrorTraceback (most recent call last)
+    49.99999999999999\,\mathrm{m}\,\mathrm{V}
 
-    <ipython-input-7-7f4b07364399> in <module>()
-    ----> 1 10*nA*5*Mohm
-    
-
-    NameError: name 'nA' is not defined
 
 
 And if you try to do something wrong like adding amps and volts, what
 happens?
 
-.. code:: ipython2
+.. code:: ipython3
 
     5*amp+10*volt
 
@@ -230,15 +128,39 @@ happens?
 ::
 
 
-    
+    ---------------------------------------------------------------------------
 
-    NameErrorTraceback (most recent call last)
+    DimensionMismatchError                    Traceback (most recent call last)
 
-    <ipython-input-8-245c0c0332d1> in <module>()
+    <ipython-input-8-245c0c0332d1> in <module>
     ----> 1 5*amp+10*volt
     
 
-    NameError: name 'amp' is not defined
+    ~/programming/brian2/brian2/units/fundamentalunits.py in __add__(self, other)
+       1429 
+       1430     def __add__(self, other):
+    -> 1431         return self._binary_operation(other, operator.add,
+       1432                                       fail_for_mismatch=True,
+       1433                                       operator_str='+')
+
+
+    ~/programming/brian2/brian2/units/fundamentalunits.py in _binary_operation(self, other, operation, dim_operation, fail_for_mismatch, operator_str, inplace)
+       1369                 message = ('Cannot calculate {value1} %s {value2}, units do not '
+       1370                            'match') % operator_str
+    -> 1371                 _, other_dim = fail_for_dimension_mismatch(self, other, message,
+       1372                                                            value1=self,
+       1373                                                            value2=other)
+
+
+    ~/programming/brian2/brian2/units/fundamentalunits.py in fail_for_dimension_mismatch(obj1, obj2, error_message, **error_quantities)
+        184             raise DimensionMismatchError(error_message, dim1)
+        185         else:
+    --> 186             raise DimensionMismatchError(error_message, dim1, dim2)
+        187     else:
+        188         return dim1, dim2
+
+
+    DimensionMismatchError: Cannot calculate 5. A + 10. V, units do not match (units are A and V).
 
 
 If you haven’t see an error message in Python before that can look a bit
@@ -274,30 +196,12 @@ Let’s start by defining a simple neuron model. In Brian, all models are
 defined by systems of differential equations. Here’s a simple example of
 what that looks like:
 
-.. code:: ipython2
+.. code:: ipython3
 
     tau = 10*ms
     eqs = '''
     dv/dt = (1-v)/tau : 1
     '''
-
-
-::
-
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-9-3914980972e6> in <module>()
-    ----> 1 tau = 10*ms
-          2 eqs = '''
-          3 dv/dt = (1-v)/tau : 1
-          4 '''
-
-
-    NameError: name 'ms' is not defined
-
 
 In Python, the notation ``'''`` is used to begin and end a multi-line
 string. So the equations are just a string with one line per equation.
@@ -309,24 +213,9 @@ the *variable* defined by the equation, i.e. in this case :math:`v`.
 
 Now let’s use this definition to create a neuron.
 
-.. code:: ipython2
+.. code:: ipython3
 
     G = NeuronGroup(1, eqs)
-
-
-::
-
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-10-74b836f776d1> in <module>()
-    ----> 1 G = NeuronGroup(1, eqs)
-    
-
-    NameError: name 'NeuronGroup' is not defined
-
 
 In Brian, you only create groups of neurons, using the class
 ``NeuronGroup``. The first two arguments when you create one of these
@@ -336,7 +225,7 @@ differential equations.
 Let’s see what happens if we didn’t put the variable ``tau`` in the
 equation:
 
-.. code:: ipython2
+.. code:: ipython3
 
     eqs = '''
     dv/dt = 1-v : 1
@@ -348,18 +237,163 @@ equation:
 ::
 
 
+    ---------------------------------------------------------------------------
+
+    DimensionMismatchError                    Traceback (most recent call last)
+
+    ~/programming/brian2/brian2/equations/equations.py in check_units(self, group, run_namespace)
+        955                 try:
+    --> 956                     check_dimensions(str(eq.expr), self.dimensions[var] / second.dim,
+        957                                      all_variables)
+
+
+    ~/programming/brian2/brian2/equations/unitcheck.py in check_dimensions(expression, dimensions, variables)
+         44                                                   expected=repr(get_unit(dimensions)))
+    ---> 45     fail_for_dimension_mismatch(expr_dims, dimensions, err_msg)
+         46 
+
+
+    ~/programming/brian2/brian2/units/fundamentalunits.py in fail_for_dimension_mismatch(obj1, obj2, error_message, **error_quantities)
+        183         if obj2 is None or isinstance(obj2, (Dimension, Unit)):
+    --> 184             raise DimensionMismatchError(error_message, dim1)
+        185         else:
+
+
+    DimensionMismatchError: Expression 1-v does not have the expected unit hertz (unit is 1).
+
+    
+    During handling of the above exception, another exception occurred:
+
+
+    DimensionMismatchError                    Traceback (most recent call last)
+
+    ~/programming/brian2/brian2/core/network.py in before_run(self, run_namespace)
+        897                 try:
+    --> 898                     obj.before_run(run_namespace)
+        899                 except Exception as ex:
+
+
+    ~/programming/brian2/brian2/groups/neurongroup.py in before_run(self, run_namespace)
+        883         # Check units
+    --> 884         self.equations.check_units(self, run_namespace=run_namespace)
+        885         # Check that subexpressions that refer to stateful functions are labeled
+
+
+    ~/programming/brian2/brian2/equations/equations.py in check_units(self, group, run_namespace)
+        958                 except DimensionMismatchError as ex:
+    --> 959                     raise DimensionMismatchError(('Inconsistent units in '
+        960                                                   'differential equation '
+
+
+    DimensionMismatchError: Inconsistent units in differential equation defining variable v:
+    Expression 1-v does not have the expected unit hertz (unit is 1).
+
+    
+    During handling of the above exception, another exception occurred:
+
+
+    BrianObjectException                      Traceback (most recent call last)
+
+    <ipython-input-11-97ed109f5888> in <module>
+          3 '''
+          4 G = NeuronGroup(1, eqs)
+    ----> 5 run(100*ms)
     
 
-    NameErrorTraceback (most recent call last)
+    ~/programming/brian2/brian2/units/fundamentalunits.py in new_f(*args, **kwds)
+       2383                                                      get_dimensions(newkeyset[k]))
+       2384 
+    -> 2385             result = f(*args, **kwds)
+       2386             if 'result' in au:
+       2387                 if au['result'] == bool:
 
-    <ipython-input-11-97ed109f5888> in <module>()
-          2 dv/dt = 1-v : 1
-          3 '''
-    ----> 4 G = NeuronGroup(1, eqs)
-          5 run(100*ms)
+
+    ~/programming/brian2/brian2/core/magic.py in run(duration, report, report_period, namespace, profile, level)
+        371         intended use. See `MagicNetwork` for more details.
+        372     '''
+    --> 373     return magic_network.run(duration, report=report, report_period=report_period,
+        374                              namespace=namespace, profile=profile, level=2+level)
+        375 run.__module__ = __name__
 
 
-    NameError: name 'NeuronGroup' is not defined
+    ~/programming/brian2/brian2/core/magic.py in run(self, duration, report, report_period, namespace, profile, level)
+        229             namespace=None, profile=False, level=0):
+        230         self._update_magic_objects(level=level+1)
+    --> 231         Network.run(self, duration, report=report, report_period=report_period,
+        232                     namespace=namespace, profile=profile, level=level+1)
+        233 
+
+
+    ~/programming/brian2/brian2/core/base.py in device_override_decorated_function(*args, **kwds)
+        274                 return getattr(curdev, name)(*args, **kwds)
+        275             else:
+    --> 276                 return func(*args, **kwds)
+        277 
+        278         device_override_decorated_function.__doc__ = func.__doc__
+
+
+    ~/programming/brian2/brian2/units/fundamentalunits.py in new_f(*args, **kwds)
+       2383                                                      get_dimensions(newkeyset[k]))
+       2384 
+    -> 2385             result = f(*args, **kwds)
+       2386             if 'result' in au:
+       2387                 if au['result'] == bool:
+
+
+    ~/programming/brian2/brian2/core/network.py in run(self, duration, report, report_period, namespace, profile, level)
+       1007             namespace = get_local_namespace(level=level+3)
+       1008 
+    -> 1009         self.before_run(namespace)
+       1010 
+       1011         if len(all_objects) == 0:
+
+
+    ~/programming/brian2/brian2/core/base.py in device_override_decorated_function(*args, **kwds)
+        274                 return getattr(curdev, name)(*args, **kwds)
+        275             else:
+    --> 276                 return func(*args, **kwds)
+        277 
+        278         device_override_decorated_function.__doc__ = func.__doc__
+
+
+    ~/programming/brian2/brian2/core/network.py in before_run(self, run_namespace)
+        898                     obj.before_run(run_namespace)
+        899                 except Exception as ex:
+    --> 900                     raise brian_object_exception("An error occurred when preparing an object.", obj, ex)
+        901 
+        902         # Check that no object has been run as part of another network before
+
+
+    BrianObjectException: Original error and traceback:
+    Traceback (most recent call last):
+      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 956, in check_units
+        check_dimensions(str(eq.expr), self.dimensions[var] / second.dim,
+      File "/home/marcel/programming/brian2/brian2/equations/unitcheck.py", line 45, in check_dimensions
+        fail_for_dimension_mismatch(expr_dims, dimensions, err_msg)
+      File "/home/marcel/programming/brian2/brian2/units/fundamentalunits.py", line 184, in fail_for_dimension_mismatch
+        raise DimensionMismatchError(error_message, dim1)
+    brian2.units.fundamentalunits.DimensionMismatchError: Expression 1-v does not have the expected unit hertz (unit is 1).
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/marcel/programming/brian2/brian2/core/network.py", line 898, in before_run
+        obj.before_run(run_namespace)
+      File "/home/marcel/programming/brian2/brian2/groups/neurongroup.py", line 884, in before_run
+        self.equations.check_units(self, run_namespace=run_namespace)
+      File "/home/marcel/programming/brian2/brian2/equations/equations.py", line 959, in check_units
+        raise DimensionMismatchError(('Inconsistent units in '
+    brian2.units.fundamentalunits.DimensionMismatchError: Inconsistent units in differential equation defining variable v:
+    Expression 1-v does not have the expected unit hertz (unit is 1).
+    
+    Error encountered with object named "neurongroup_1".
+    Object was created here (most recent call only, full details in debug log):
+      File "<ipython-input-11-97ed109f5888>", line 4, in <module>
+        G = NeuronGroup(1, eqs)
+    
+    An error occurred when preparing an object. brian2.units.fundamentalunits.DimensionMismatchError: Inconsistent units in differential equation defining variable v:
+    Expression 1-v does not have the expected unit hertz (unit is 1).
+    (See above for original error message and traceback.)
 
 
 An error is raised, but why? The reason is that the differential
@@ -375,7 +409,7 @@ insist that you always specify dimensionally consistent equations.
 
 Now let’s go back to the good equations and actually run the simulation.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -388,22 +422,9 @@ Now let’s go back to the good equations and actually run the simulation.
     run(100*ms)
 
 
-::
+.. parsed-literal::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-12-88b90c52ec07> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 tau = 10*ms
-          4 eqs = '''
-          5 dv/dt = (1-v)/tau : 1
-
-
-    NameError: name 'start_scope' is not defined
+    INFO       No numerical integration method specified for group 'neurongroup', using method 'exact' (took 0.02s). [brian2.stateupdaters.base.method_choice]
 
 
 First off, ignore that ``start_scope()`` at the top of the cell. You’ll
@@ -420,7 +441,7 @@ So, what has happened here? Well, the command ``run(100*ms)`` runs the
 simulation for 100 ms. We can see that this has worked by printing the
 value of the variable ``v`` before and after the simulation.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -430,22 +451,10 @@ value of the variable ``v`` before and after the simulation.
     print('After v = %s' % G.v[0])
 
 
-::
+.. parsed-literal::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-13-3e2d05959f69> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 G = NeuronGroup(1, eqs, method='exact')
-          4 print('Before v = %s' % G.v[0])
-          5 run(100*ms)
-
-
-    NameError: name 'start_scope' is not defined
+    Before v = 0.0
+    After v = 0.9999546000702376
 
 
 By default, all variables start with the value 0. Since the differential
@@ -454,23 +463,14 @@ would tend towards the value 1, which is just what we see. Specifically,
 we’d expect ``v`` to have the value ``1-exp(-t/tau)``. Let’s see if
 that’s right.
 
-.. code:: ipython2
+.. code:: ipython3
 
     print('Expected value of v = %s' % (1-exp(-100*ms/tau)))
 
 
-::
+.. parsed-literal::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-14-8f1e09d2cba6> in <module>()
-    ----> 1 print('Expected value of v = %s' % (1-exp(-100*ms/tau)))
-    
-
-    NameError: name 'exp' is not defined
+    Expected value of v = 0.9999546000702375
 
 
 Good news, the simulation gives the value we’d expect!
@@ -478,7 +478,7 @@ Good news, the simulation gives the value we’d expect!
 Now let’s take a look at a graph of how the variable ``v`` evolves over
 time.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -492,29 +492,15 @@ time.
     ylabel('v');
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-15-a489b277bd78> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 G = NeuronGroup(1, eqs, method='exact')
-          4 M = StateMonitor(G, 'v', record=True)
-          5 
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_31_0.png
 
 
 This time we only ran the simulation for 30 ms so that we can see the
 behaviour better. It looks like it’s behaving as expected, but let’s
 just check that analytically by plotting the expected behaviour on top.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -530,22 +516,8 @@ just check that analytically by plotting the expected behaviour on top.
     legend();
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-16-b0ce8a03d476> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 G = NeuronGroup(1, eqs, method='exact')
-          4 M = StateMonitor(G, 'v', record=0)
-          5 
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_33_0.png
 
 
 As you can see, the blue (Brian) and dashed orange (analytic solution)
@@ -562,7 +534,7 @@ it usually uses up too much RAM to record the values of all neurons.
 Now try modifying the equations and parameters and see what happens in
 the cell below.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -584,22 +556,8 @@ the cell below.
     ylabel('v');
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-17-6915abd7dcbf> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 tau = 10*ms
-          4 eqs = '''
-          5 dv/dt = (sin(2*pi*100*Hz*t)-v)/tau : 1
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_35_0.png
 
 
 Adding spikes
@@ -608,7 +566,7 @@ Adding spikes
 So far we haven’t done anything neuronal, just played around with
 differential equations. Now let’s start adding spiking behaviour.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -626,22 +584,8 @@ differential equations. Now let’s start adding spiking behaviour.
     ylabel('v');
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-18-82651eb8971a> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 tau = 10*ms
-          4 eqs = '''
-          5 dv/dt = (1-v)/tau : 1
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_37_0.png
 
 
 We’ve added two new keywords to the ``NeuronGroup`` declaration:
@@ -655,7 +599,7 @@ until ``v`` crosses the threshold ``v>0.8`` at which point you see it
 reset to 0. You can’t see it in this figure, but internally Brian has
 registered this event as a spike. Let’s have a look at that.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -668,22 +612,9 @@ registered this event as a spike. Let’s have a look at that.
     print('Spike times: %s' % spikemon.t[:])
 
 
-::
+.. parsed-literal::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-19-64d6412551f0> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='exact')
-          4 
-          5 spikemon = SpikeMonitor(G)
-
-
-    NameError: name 'start_scope' is not defined
+    Spike times: [16.  32.1 48.2] ms
 
 
 The ``SpikeMonitor`` object takes the group whose spikes you want to
@@ -691,7 +622,7 @@ record as its argument and stores the spike times in the variable ``t``.
 Let’s plot those spikes on top of the other figure to see that it’s
 getting it right.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -709,22 +640,8 @@ getting it right.
     ylabel('v');
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-20-1c92fa1f9d75> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 G = NeuronGroup(1, eqs, threshold='v>0.8', reset='v = 0', method='exact')
-          4 
-          5 statemon = StateMonitor(G, 'v', record=0)
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_41_0.png
 
 
 Here we’ve used the ``axvline`` command from ``matplotlib`` to draw an
@@ -742,7 +659,7 @@ after the neuron fires a spike it becomes refractory for a certain
 duration and cannot fire another spike until this period is over. Here’s
 how we do that in Brian.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -765,22 +682,8 @@ how we do that in Brian.
     ylabel('v');
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-21-d65e3bba0653> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 tau = 10*ms
-          4 eqs = '''
-          5 dv/dt = (1-v)/tau : 1 (unless refractory)
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_44_0.png
 
 
 As you can see in this figure, after the first spike, ``v`` stays at 0
@@ -798,7 +701,7 @@ Here’s what would happen if we didn’t include ``(unless refractory)``.
 Note that we’ve also decreased the value of ``tau`` and increased the
 length of the refractory period to make the behaviour clearer.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -823,22 +726,13 @@ length of the refractory period to make the behaviour clearer.
     print("Spike times: %s" % spikemon.t[:])
 
 
-::
+.. parsed-literal::
+
+    Spike times: [ 8. 23. 38.] ms
 
 
-    
 
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-22-b3bddd59f027> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 tau = 5*ms
-          4 eqs = '''
-          5 dv/dt = (1-v)/tau : 1
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_46_1.png
 
 
 So what’s going on here? The behaviour for the first spike is the same:
@@ -863,7 +757,7 @@ Multiple neurons
 So far we’ve only been working with a single neuron. Let’s do something
 interesting with multiple neurons.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -885,22 +779,8 @@ interesting with multiple neurons.
     ylabel('Neuron index');
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-23-71c26b49d858> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 N = 100
-          4 tau = 10*ms
-          5 eqs = '''
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_49_0.png
 
 
 This shows a few changes. Firstly, we’ve got a new variable ``N``
@@ -923,7 +803,7 @@ To make these multiple neurons do something more interesting, let’s
 introduce per-neuron parameters that don’t have a differential equation
 attached to them.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -955,22 +835,8 @@ attached to them.
     ylabel('Firing rate (sp/s)');
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-24-f566f8d048d8> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 N = 100
-          4 tau = 10*ms
-          5 v0_max = 3.
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_52_0.png
 
 
 The line ``v0 : 1`` declares a new per-neuron parameter ``v0`` with
@@ -1011,7 +877,7 @@ method <https://en.wikipedia.org/wiki/Euler%E2%80%93Maruyama_method>`__);
 the ``'exact'`` method that we used earlier is not applicable to
 stochastic differential equations.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -1044,22 +910,8 @@ stochastic differential equations.
     ylabel('Firing rate (sp/s)');
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-25-e38c73ce4585> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 N = 100
-          4 tau = 10*ms
-          5 v0_max = 3.
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_55_0.png
 
 
 That’s the same figure as in the previous section but with some noise
@@ -1081,7 +933,7 @@ You could also try out the things you’ve learned in this cell.
 Once you’re done with that you can move on to the next tutorial on
 Synapses.
 
-.. code:: ipython2
+.. code:: ipython3
 
     start_scope()
     
@@ -1118,20 +970,6 @@ Synapses.
     ylabel('Instantaneous firing rate (sp/s)');
 
 
-::
 
-
-    
-
-    NameErrorTraceback (most recent call last)
-
-    <ipython-input-26-ed364f7aa4b4> in <module>()
-    ----> 1 start_scope()
-          2 
-          3 N = 1000
-          4 tau = 10*ms
-          5 vr = -70*mV
-
-
-    NameError: name 'start_scope' is not defined
+.. image:: 1-intro-to-brian-neurons_image_58_0.png
 
