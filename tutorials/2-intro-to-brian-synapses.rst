@@ -66,7 +66,15 @@ synapse that causes an instantaneous change in a variable after a spike.
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_5_0.png
+
+.. parsed-literal::
+
+    <matplotlib.legend.Legend at 0x7fdccb8773d0>
+
+
+
+
+.. image:: 2-intro-to-brian-synapses_image_5_1.png
 
 
 There are a few things going on here. First of all, let’s recap what is
@@ -133,7 +141,15 @@ different synapses. We do that by introducing synapse equations.
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_8_0.png
+
+.. parsed-literal::
+
+    <matplotlib.legend.Legend at 0x7fdccb7f2750>
+
+
+
+
+.. image:: 2-intro-to-brian-synapses_image_8_1.png
 
 
 This example behaves very similarly to the previous example, but now
@@ -187,7 +203,15 @@ act with a certain delay.
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_11_0.png
+
+.. parsed-literal::
+
+    <matplotlib.legend.Legend at 0x7fdccb7f2290>
+
+
+
+
+.. image:: 2-intro-to-brian-synapses_image_11_1.png
 
 
 As you can see, that’s as simple as adding a line ``S.delay = 'j*2*ms'``
@@ -267,7 +291,7 @@ connection:
         S = Synapses(G, G)
         S.connect(condition='i!=j', p=p)
         visualise_connectivity(S)
-        suptitle('p = '+str(p))
+        suptitle('p = '+str(p));
 
 
 
@@ -378,7 +402,15 @@ visualise the weight of a synapse by the size of the marker.
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_27_0.png
+
+.. parsed-literal::
+
+    Text(0, 0.5, 'Target neuron position (um)')
+
+
+
+
+.. image:: 2-intro-to-brian-synapses_image_27_1.png
 
 
 Now try changing that function and seeing how the plot changes.
@@ -422,7 +454,15 @@ This function looks like this:
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_29_0.png
+
+.. parsed-literal::
+
+    <matplotlib.lines.Line2D at 0x7fdccb5acdd0>
+
+
+
+
+.. image:: 2-intro-to-brian-synapses_image_29_1.png
 
 
 Simulating it directly using this equation though would be very
@@ -438,10 +478,10 @@ differential equations:
 .. math::
 
 
-   \begin{align}
+   \begin{aligned}
    \tau_{pre}\frac{\mathrm{d}}{\mathrm{d}t} a_{pre} &= -a_{pre}\\
    \tau_{post}\frac{\mathrm{d}}{\mathrm{d}t} a_{post} &= -a_{post}
-   \end{align}
+   \end{aligned}
 
 When a presynaptic spike occurs, the presynaptic trace is updated and
 the weight is modified according to the rule:
@@ -449,20 +489,20 @@ the weight is modified according to the rule:
 .. math::
 
 
-   \begin{align}
+   \begin{aligned}
    a_{pre} &\rightarrow a_{pre}+A_{pre}\\
    w &\rightarrow w+a_{post}
-   \end{align}
+   \end{aligned}
 
 When a postsynaptic spike occurs:
 
 .. math::
 
 
-   \begin{align}
+   \begin{aligned}
    a_{post} &\rightarrow a_{post}+A_{post}\\
    w &\rightarrow w+a_{pre}
-   \end{align}
+   \end{aligned}
 
 To see that this formulation is equivalent, you just have to check that
 the equations sum linearly, and consider two cases: what happens if the
@@ -481,7 +521,7 @@ equations and spike events, we can turn that into Brian code.
     Apre = 0.01
     Apost = -Apre*taupre/taupost*1.05
     
-    G = NeuronGroup(1, 'v:1', threshold='v>1')
+    G = NeuronGroup(1, 'v:1', threshold='v>1', reset='')
     
     S = Synapses(G, G,
                  '''
@@ -568,7 +608,15 @@ arrives some time before a postsynaptic spike.
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_33_0.png
+
+.. parsed-literal::
+
+    Text(0.5, 0, 'Time (ms)')
+
+
+
+
+.. image:: 2-intro-to-brian-synapses_image_33_1.png
 
 
 A couple of things to note here. First of all, we’ve used a trick to
@@ -627,7 +675,15 @@ original one.
 
 
 
-.. image:: 2-intro-to-brian-synapses_image_35_0.png
+
+.. parsed-literal::
+
+    <matplotlib.lines.Line2D at 0x7fdcc8ae8890>
+
+
+
+
+.. image:: 2-intro-to-brian-synapses_image_35_1.png
 
 
 Can you see how this works?
